@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+*.egg-info
+.venv*
+.ruff_cache/
+.pytest_cache/
+
+# Downloaded data and large intermediates: never tracked. Small result tables and figures are.
+data/
+results/*
+!results/MANIFEST.sha256
+!results/run_log.json
+!results/report/
+results/**/*.npz
+results/**/*.parquet
+*.h5ad
+*.bam
+*.bam.bai
+*.cram
+*.fastq.gz
+*.vcf.gz
+work/
+.nextflow*
+
+# Keys and tokens
+*.token
+api_keys.py
+.env
+
+# Local agent config: machine-specific
+CLAUDE.md
+.claude/
+.ipynb_checkpoints/
