@@ -1,6 +1,7 @@
 """`bte run <stage>`: the pipeline, one stage per module. Stages arrive one pull request at a time;
 until a stage exists, asking for it says so and exits non-zero."""
 import argparse
+import importlib
 import sys
 
 STAGES = [
@@ -28,8 +29,12 @@ def main(argv=None):
         for s, d in STAGES:
             print(f"{s:<10} {d}")
         return 0
-    print(f"stage {a.stage!r} is not implemented yet; see the open pull requests", file=sys.stderr)
-    return 2
+    try:
+        mod = importlib.import_module(f"bte.stages.{a.stage}")
+    except ModuleNotFoundError:
+        print(f"stage {a.stage!r} is not implemented yet; see the open pull requests", file=sys.stderr)
+        return 2
+    return mod.run() or 0
 
 
 if __name__ == "__main__":

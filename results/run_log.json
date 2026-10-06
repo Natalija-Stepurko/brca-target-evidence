@@ -1,0 +1,20 @@
+{
+ "runs": [
+  {
+   "stage": "data",
+   "finished": "2026-10-06T15:52:32+00:00",
+   "commit": "5a20495",
+   "seconds": 239.1,
+   "params": {
+    "min_protein_detection": 0.5,
+    "n_sources": 27
+   },
+   "outputs": [
+    "results/data/universe.csv",
+    "results/data/counts.csv",
+    "results/data/discovery_samples.csv",
+    "results/MANIFEST.sha256"
+   ]
+  }
+ ]
+}

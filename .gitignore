@@ -14,6 +14,7 @@ results/*
 !results/MANIFEST.sha256
 !results/run_log.json
 !results/report/
+!results/data/
 results/**/*.npz
 results/**/*.parquet
 *.h5ad
@@ -34,3 +35,4 @@ api_keys.py
 CLAUDE.md
 .claude/
 .ipynb_checkpoints/
+!results/data/
