@@ -1,0 +1,12 @@
+{
+ "best_arm": {
+  "basal": "R-all",
+  "her2": "R+D",
+  "luminal": "R+D"
+ },
+ "n_candidates": 150,
+ "survival_n": 1057,
+ "survival_events": 140,
+ "atlas_n_malignant": 18966,
+ "atlas_n_other": 31036
+}

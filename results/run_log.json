@@ -34,24 +34,6 @@
    ]
   },
   {
-   "stage": "nominate",
-   "finished": "2026-10-06T15:58:21+00:00",
-   "commit": "3303f55",
-   "seconds": 17.3,
-   "params": {
-    "K": 50,
-    "K_sensitivity": [
-     25,
-     100
-    ],
-    "mofa_factors": 10
-   },
-   "outputs": [
-    "results/nominate/lists_discovery.csv",
-    "results/nominate/positive_controls.csv"
-   ]
-  },
-  {
    "stage": "truth",
    "finished": "2026-10-06T16:04:30+00:00",
    "commit": "5db5a6d",
@@ -69,6 +51,91 @@
     "results/truth/t1_gene_effect.csv",
     "results/truth/t2_clinical_precedence.csv",
     "results/truth/tractability.csv"
+   ]
+  },
+  {
+   "stage": "nominate",
+   "finished": "2026-10-06T16:10:12+00:00",
+   "commit": "ae8d2da",
+   "seconds": 17.2,
+   "params": {
+    "K": 50,
+    "K_sensitivity": [
+     25,
+     100
+    ],
+    "mofa_factors": 10
+   },
+   "outputs": [
+    "results/nominate/lists_discovery.csv",
+    "results/nominate/positive_controls.csv"
+   ]
+  },
+  {
+   "stage": "ladder",
+   "finished": "2026-10-06T17:09:32+00:00",
+   "commit": "ae8d2da",
+   "seconds": 3553.5,
+   "params": {
+    "n_matched_random": 1000,
+    "n_permutations": 1000,
+    "n_bootstrap": 1000,
+    "mofa_bootstrap_refits": 200,
+    "seed": 0
+   },
+   "outputs": [
+    "results/ladder/arm_differences.csv",
+    "results/ladder/bootstrap.csv",
+    "results/ladder/matched_floor.csv",
+    "results/ladder/observed.csv",
+    "results/ladder/permutation_null.csv",
+    "results/ladder/permutation_summary.csv",
+    "results/ladder/strata.csv"
+   ]
+  },
+  {
+   "stage": "replicate",
+   "finished": "2026-10-06T17:13:25+00:00",
+   "commit": "ae8d2da",
+   "seconds": 227.2,
+   "params": {
+    "n_permutations": 1000,
+    "seed": 1,
+    "n_krug": 117
+   },
+   "outputs": [
+    "results/replicate/endpoints_krug.csv",
+    "results/replicate/lists_krug.csv",
+    "results/replicate/overlap.csv",
+    "results/replicate/overlap_null.csv"
+   ]
+  },
+  {
+   "stage": "dossier",
+   "finished": "2026-10-06T17:14:02+00:00",
+   "commit": "ae8d2da",
+   "seconds": 8.2,
+   "params": {
+    "top": 10,
+    "atlas": "/data/scfm/data/atlas.h5ad"
+   },
+   "outputs": [
+    "results/dossier/candidates.csv",
+    "results/dossier/summary.json",
+    "results/dossier/top10.csv"
+   ]
+  },
+  {
+   "stage": "report",
+   "finished": "2026-10-06T17:14:04+00:00",
+   "commit": "ae8d2da",
+   "seconds": 0.6,
+   "params": {},
+   "outputs": [
+    "results/report/fig_diffs.png",
+    "results/report/fig_floor.png",
+    "results/report/fig_replication.png",
+    "results/report/summary.json"
    ]
   }
  ]

@@ -71,6 +71,7 @@ class Mofa:
             m = m.reindex(columns=samples)
             m = m[m.notna().mean(axis=1) >= 0.5]                      # features seen in half the tumours
             m = m.sub(m.mean(axis=1), axis=0).div(m.std(axis=1).replace(0, np.nan), axis=0)
+            m = m[m.notna().any(axis=1)]                              # zero-variance features drop out
             self.genes[name] = list(m.index)
             data.append([m.T.values])                                  # one group, samples x features
         ent = entry_point()
