@@ -50,6 +50,26 @@
     "results/nominate/lists_discovery.csv",
     "results/nominate/positive_controls.csv"
    ]
+  },
+  {
+   "stage": "truth",
+   "finished": "2026-10-06T16:04:30+00:00",
+   "commit": "5db5a6d",
+   "seconds": 13.9,
+   "params": {
+    "hit_gene_effect": -0.5,
+    "hit_selectivity": 0.25,
+    "depmap": "24Q4",
+    "open_targets": "26.09"
+   },
+   "outputs": [
+    "results/truth/depmap_breast_lines.csv",
+    "results/truth/gtex.csv",
+    "results/truth/summary.json",
+    "results/truth/t1_gene_effect.csv",
+    "results/truth/t2_clinical_precedence.csv",
+    "results/truth/tractability.csv"
+   ]
   }
  ]
 }
