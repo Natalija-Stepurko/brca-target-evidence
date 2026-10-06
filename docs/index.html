@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Does the protein layer pick better drug targets?</title>
+<meta name="description" content="A pre-registered evaluation of multi-omics target nomination in breast
+cancer: RNA alone against RNA plus protein and DNA, scored against held-out dependency and clinical
+evidence with popularity-matched nulls, replicated in an independent cohort.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='18' width='6' height='10' fill='%232D5BD1'/%3E%3Crect x='13' y='11' width='6' height='17' fill='%23C06014'/%3E%3Crect x='22' y='4' width='6' height='24' fill='%230E7C7B'/%3E%3C/svg%3E">
+<style>
+:root{--paper:#F7F8F9;--panel:#FFFFFF;--ink:#16191D;--muted:#5B646E;--rule:#DDE1E4;--rna:#2D5BD1;--prot:#C06014;
+  --truth:#0E7C7B;--sans:ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:58px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  -webkit-font-smoothing:antialiased;padding-inline:16px}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 0 80px}
+a{color:var(--ink)}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);line-height:1.15;margin:.3em 0 .5em;letter-spacing:-.01em}
+h2{font-size:1.45rem;margin:2.2em 0 .6em;letter-spacing:-.01em}
+h3{font-size:1.05rem;margin:1.6em 0 .4em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin:0}
+.lede{font-size:1.08rem;max-width:62ch}
+.note{color:var(--muted);font-size:.95rem}
+.muted{color:var(--muted)}
+.status{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{display:inline-block;font-family:var(--mono);font-size:.7rem;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--rule);background:var(--panel);color:var(--muted);white-space:nowrap}
+.chip.live{border-color:var(--truth);color:var(--truth)}
+.links{font-size:.95rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:1em 0}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}
+.card h3{margin:0 0 .4em;font-size:.95rem}
+.card p{margin:0;font-size:.95rem}
+.figwrap{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:12px;overflow-x:auto}
+.figwrap svg{display:block;width:100%;min-width:640px;height:auto}
+.figcap{color:var(--muted);font-size:.9rem;margin:.5em 0 1.4em}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--panel)}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pending{border:1px dashed var(--rule);border-radius:8px;padding:14px 16px;margin:12px 0;color:var(--muted);font-size:.95rem}
+.pending .chip{margin-right:6px}
+code{font-family:var(--mono);font-size:.88em;background:#EEF1F2;padding:1px 5px;border-radius:4px}
+ol.refs{font-size:.92rem;padding-left:1.3em}
+ol.refs li{margin:.35em 0}
+footer{margin-top:60px;border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.85rem}
+/* sticky section navbar */
+.topnav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;margin:0 -16px;
+  padding:0 max(16px,calc((100% - 1040px)/2 + 16px));height:48px;background:rgba(247,248,249,.94);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:.7rem}
+.topnav a{color:var(--muted);text-decoration:none;white-space:nowrap}
+.topnav a:hover{color:var(--truth)}
+.topnav .brand{color:var(--ink);font-weight:600;flex:none}
+.navlinks{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;flex:1 1 auto;min-width:0;padding:0 12px}
+.navlinks::-webkit-scrollbar{display:none}
+.navlinks a{padding:14px 0 12px;border-bottom:2px solid transparent}
+.navlinks a.on{color:var(--ink);border-bottom-color:var(--truth)}
+.navext{display:flex;gap:14px;flex:none}
+.navext a{color:var(--truth);font-weight:600}
+@media(max-width:640px){.topnav .brand{display:none}.topnav{gap:10px}}
+</style>
+</head>
+<body>
+<nav class="topnav" aria-label="Sections"><a class="brand" href="#top">Target evidence</a><div class="navlinks"><a href="#question">Question</a><a href="#why">Why</a><a href="#design">Design</a><a href="#predictions">Predictions</a><a href="#results">Results</a><a href="#audit">Agent audit</a><a href="#exome">Exome</a><a href="#data">Data</a><a href="#literature">Literature</a><a href="#limits">Limits</a></div><div class="navext"><a href="https://github.com/Natalija-Stepurko/brca-target-evidence">Code</a><a href="https://github.com/Natalija-Stepurko/brca-target-evidence/blob/main/docs/DESIGN.md">Design</a></div></nav>
+<div class="wrap">
+<header class="page" id="top">
+  <p class="eyebrow">Breast cancer · multi-omics · target identification · study 2 of a series</p>
+  <h1>Does the protein layer pick better drug targets?</h1>
+  <p class="lede">Three proteogenomic studies have nominated breast-cancer drug targets by combining DNA,
+  RNA and protein measurements from the same tumours. Whether the extra layers improve the shortlist has
+  never been measured. This study measures it: the same tumours, the same gene universe, the same list
+  size, with and without each layer, scored against dependency and clinical evidence that played no part
+  in the nomination, against random genes matched for how well studied they are.</p>
+  <div class="status"><span class="chip live">pre-registered 2026-10-06</span>
+  <span class="chip">no data downloaded yet</span><span class="chip">results pending</span></div>
+  <p class="links"><a href="https://github.com/Natalija-Stepurko/brca-target-evidence/blob/main/docs/DESIGN.md">Design (pre-registered)</a> · <a href="https://github.com/Natalija-Stepurko/brca-target-evidence/blob/main/research/literature.md">Literature</a> ·
+  <a href="https://github.com/Natalija-Stepurko/brca-target-evidence">Repository</a> · <a href="https://natalija-stepurko.github.io/single-cell-fm-probing/">Study 1: single-cell cell states and survival</a></p>
+</header>
+
+<section class="sec" id="question">
+  <h2>The question</h2>
+  <p>In breast cancer, does adding protein (and DNA) evidence to RNA nominate drug targets that are more
+  often confirmed by held-out evidence than RNA alone — beyond what random genes matched for popularity
+  achieve — and do the nominations replicate in an independent cohort?</p>
+  <p>And a second question: when an AI agent writes the rationale for a nominated target, how many of its
+  claims survive a check against the held-out data, and does it prefer famous genes?</p>
+  <p class="note">Expected answer, stated before any data: little or no list-level gain from the protein
+  layer, because the genes that are druggable tend to be the ones whose mRNA and protein levels agree. A
+  clean null is a measurement here: it tells a target-discovery team when proteomics is worth paying for.
+  Either answer is reported.</p>
+</section>
+
+<section class="sec" id="why">
+  <h2>Why this study</h2>
+  <div class="cards">
+    <div class="card"><h3>Already done</h3><p>Nominating breast-cancer targets from integrated tumour
+    omics: Mertins 2016 (77 TCGA tumours with proteomics), Krug 2020 (122 prospective tumours), Savage
+    2024 (1,043 patients, 10 cancer types), Lin 2025 (DepMap-filtered breast targets), Pacini 2024 (370
+    priority targets across 27 cancer types). A sixth list adds little.</p></div>
+    <div class="card"><h3>Never measured</h3><p>Whether the extra layers help. No study compares
+    integrated with RNA-only nomination at equal list size, scores both against held-out evidence, and
+    controls for gene popularity. Savage 2024 never ran an RNA arm and excluded breast. Krug 2020 reports
+    zero overlap of its drivers with Mertins 2016's; nobody has measured how reproducible nominations
+    are.</p></div>
+    <div class="card"><h3>What the evidence predicts</h3><p>For prediction tasks, RNA carries most of the
+    signal and protein is roughly at parity (Rappoport 2018, Herrmann 2021, Gonçalves 2022, DrEval
+    2026). Druggable genes have the higher mRNA–protein correlation (Savage 2024). None of that was
+    tested on target nomination.</p></div>
+  </div>
+  <p>Study 1 of this series asked a related question of single-cell foundation models — do the cell
+  states they find in breast tumours predict survival better than a linear baseline? — and read the
+  answer against the same kind of ladder. <a href="https://natalija-stepurko.github.io/single-cell-fm-probing/">Its result was a clean null.</a></p>
+</section>
+
+<section class="sec" id="design">
+  <h2>Design</h2>
+  <div class="figwrap"><svg viewBox="0 0 980 300" role="img" aria-label="Study flow: three omics layers from 77 tumours feed six nomination arms; each produces a top-50 list per subtype, scored against held-out dependency and clinical evidence that no arm sees."><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5B646E"/></marker></defs><text x="20" y="22" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" letter-spacing=".06em">77 DISCOVERY TUMOURS</text><text x="300" y="22" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" letter-spacing=".06em">NOMINATION ARMS</text><text x="560" y="22" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" letter-spacing=".06em">TOP-50 PER SUBTYPE</text><text x="790" y="22" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" letter-spacing=".06em">HELD-OUT TRUTH</text><rect x="20" y="44" width="200" height="44" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="120.0" y="64" text-anchor="middle" font-size="13" font-weight="600" fill="#2D5BD1" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">RNA-seq</text><text x="120.0" y="80" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">TCGA</text><rect x="20" y="104" width="200" height="44" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="120.0" y="124" text-anchor="middle" font-size="13" font-weight="600" fill="#C06014" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Proteome</text><text x="120.0" y="140" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">CPTAC, Mertins 2016</text><rect x="20" y="164" width="200" height="44" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="120.0" y="184" text-anchor="middle" font-size="13" font-weight="600" fill="#6E7880" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">DNA</text><text x="120.0" y="200" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">mutations · copy number</text><rect x="20" y="230" width="200" height="44" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2" stroke-dasharray="4 3"/><text x="120.0" y="250" text-anchor="middle" font-size="13" font-weight="600" fill="#2D5BD1" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">RNA-seq, ~1,000 tumours</text><text x="120.0" y="266" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">all TCGA-BRCA</text><rect x="300" y="44" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="63" text-anchor="middle" font-size="13" font-weight="600" fill="#0E7C7B" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">R</text><line x1="220" y1="66" x2="300" y2="59" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="59" x2="560" y2="59" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="44" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="63" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="59" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="300" y="84" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="103" text-anchor="middle" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">R+P</text><line x1="220" y1="66" x2="300" y2="99" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="220" y1="126" x2="300" y2="99" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="99" x2="560" y2="99" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="84" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="103" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="99" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="300" y="124" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">R+D</text><line x1="220" y1="66" x2="300" y2="139" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="220" y1="186" x2="300" y2="139" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="139" x2="560" y2="139" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="124" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="139" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="300" y="164" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="183" text-anchor="middle" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">R+P+D</text><line x1="220" y1="66" x2="300" y2="179" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="220" y1="126" x2="300" y2="179" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="220" y1="186" x2="300" y2="179" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="179" x2="560" y2="179" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="164" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="183" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="179" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="300" y="204" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="223" text-anchor="middle" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">MOFA+</text><line x1="220" y1="126" x2="300" y2="219" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="220" y1="186" x2="300" y2="219" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="219" x2="560" y2="219" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="204" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="223" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="219" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="300" y="244" width="160" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="380.0" y="263" text-anchor="middle" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">R-all</text><line x1="220" y1="252" x2="300" y2="259" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><line x1="460" y1="259" x2="560" y2="259" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="560" y="244" width="150" height="30" rx="4" fill="#FFFFFF" stroke="#DDE1E4" stroke-width="1.2"/><text x="635.0" y="263" text-anchor="middle" font-size="13" font-weight="600" fill="#5B646E" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">basal · HER2 · luminal</text><line x1="710" y1="259" x2="790" y2="150" stroke="#5B646E" stroke-width="1.2" marker-end="url(#ah)"/><rect x="790" y="90" width="170" height="50" rx="4" fill="#EAF4F4" stroke="#0E7C7B" stroke-width="1.2"/><text x="875.0" y="113" text-anchor="middle" font-size="13" font-weight="600" fill="#0E7C7B" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Dependency</text><text x="875.0" y="129" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">DepMap 24Q4, 53 lines</text><rect x="790" y="160" width="170" height="50" rx="4" fill="#EAF4F4" stroke="#0E7C7B" stroke-width="1.2"/><text x="875.0" y="183" text-anchor="middle" font-size="13" font-weight="600" fill="#0E7C7B" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Clinical precedence</text><text x="875.0" y="199" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">Open Targets 26.09</text><text x="875" y="250" text-anchor="middle" font-size="11" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">never used in nomination</text></svg></div>
+  <p class="figcap">Three layers from the 77 TCGA-BRCA tumours that CPTAC profiled (Mertins 2016) feed
+  six nomination arms. Each arm ranks one shared gene universe and returns its top 50 per PAM50 subtype
+  (basal-like, HER2-enriched, luminal). The lists are scored against evidence no arm sees.</p>
+  <h3>The arms</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Arm</th><th>Evidence</th><th>Combination</th><th>Tumours</th><th>Role</th></tr></thead>
+    <tbody>
+    <tr><td><b>R</b></td><td>RNA</td><td>—</td><td>77</td><td>baseline for the information question</td></tr>
+    <tr><td><b>R+P</b></td><td>RNA, protein</td><td>mean of rank percentiles</td><td>77</td><td>the primary comparison, P2</td></tr>
+    <tr><td><b>R+D</b></td><td>RNA, DNA</td><td>mean of rank percentiles</td><td>77</td><td>is DNA the more useful second layer? P3</td></tr>
+    <tr><td><b>R+P+D</b></td><td>all three</td><td>mean of rank percentiles</td><td>77</td><td>everything a programme would have</td></tr>
+    <tr><td><b>MOFA+</b></td><td>RNA, protein, copy number</td><td>factor weights</td><td>77</td><td>does the integration method matter? P4</td></tr>
+    <tr><td><b>R-all</b></td><td>RNA</td><td>—</td><td>~1,000</td><td>baseline for the practical question, P6</td></tr>
+    </tbody></table></div>
+  <p>Per layer, a gene's evidence is a standardised mean difference between the subtype's tumours and the
+  cohort's others (for DNA: copy-number difference with a cis-expression check, or mutation recurrence).
+  A gene enters any list only if it is up in tumour against adjacent normal tissue; the same gate, from
+  the same RNA data, applies to every arm.</p>
+  <h3>Held-out truth</h3>
+  <p><b>Dependency (primary).</b> DepMap 24Q4 CRISPR gene effect in the 53 breast cell lines with a
+  screen, each assigned to a subtype. The endpoint is the mean gene effect of a list in the matched lines
+  (more negative means the list is enriched for genes those cells depend on); precision against a binary
+  hit set is secondary. Pan-essential genes are excluded. <b>Clinical precedence (secondary).</b> Targets
+  of drugs that reached any clinical phase for a breast indication, Open Targets 26.09, frozen.</p>
+  <h3>The ladder</h3>
+  <div class="figwrap"><svg viewBox="0 0 980 260" role="img" aria-label="The ladder every list is read against, from the matched-random floor at the bottom to replication at the top."><line x1="40" y1="42" x2="940" y2="42" stroke="#DDE1E4"/><circle cx="40" cy="42" r="6" fill="#0E7C7B"/><text x="60" y="38" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Replication</text><text x="60" y="56" font-size="11.5" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">frozen pipeline on 122 Krug 2020 tumours</text><line x1="40" y1="88" x2="940" y2="88" stroke="#DDE1E4"/><circle cx="40" cy="88" r="6" fill="#16191D"/><text x="60" y="84" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Positive controls</text><text x="60" y="102" font-size="11.5" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">ERBB2 in HER2-enriched, ESR1 in luminal</text><line x1="40" y1="134" x2="940" y2="134" stroke="#DDE1E4"/><circle cx="40" cy="134" r="6" fill="#2D5BD1"/><text x="60" y="130" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Baseline arm</text><text x="60" y="148" font-size="11.5" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">RNA alone, same tumours, same universe, same K</text><line x1="40" y1="180" x2="940" y2="180" stroke="#DDE1E4"/><circle cx="40" cy="180" r="6" fill="#5B646E"/><text x="60" y="176" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Label-permutation null</text><text x="60" y="194" font-size="11.5" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">subtype labels shuffled, every arm re-run</text><line x1="40" y1="226" x2="940" y2="226" stroke="#DDE1E4"/><circle cx="40" cy="226" r="6" fill="#5B646E"/><text x="60" y="222" font-size="13" font-weight="600" fill="#16191D" font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif">Matched-random floor</text><text x="60" y="240" font-size="11.5" fill="#5B646E" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace">1,000 lists matched on PubMed count, expression, protein detection</text></svg></div>
+  <p class="figcap">Every list is read against all five rungs. Arm differences carry a paired bootstrap
+  interval over tumours; the smallest effect of interest is 0.05 in mean gene effect or 5 genes in 50.</p>
+</section>
+
+<section class="sec" id="predictions">
+  <h2>Predictions, fixed before any data</h2>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>Prediction</th><th>Note</th><th>Outcome</th></tr></thead><tbody><tr><td><b>P1</b></td><td>Every arm's top-50 beats its matched-random floor (percentile ≤ 5%) in at least two of three subtypes</td><td class="muted">if not, the truth is uninformative at this sample size and P2–P6 are reported but not interpreted</td><td><span class="chip">pending</span></td></tr><tr><td><b>P2</b></td><td>R+P does not beat R by the smallest effect of interest; the interval is reported either way</td><td class="muted">primary prediction</td><td><span class="chip">pending</span></td></tr><tr><td><b>P3</b></td><td>R+D adds no more over R than R+P does</td><td class="muted"></td><td><span class="chip">pending</span></td></tr><tr><td><b>P4</b></td><td>MOFA+ does not beat R+P+D rank stacking</td><td class="muted"></td><td><span class="chip">pending</span></td></tr><tr><td><b>P5</b></td><td>Each arm's discovery–replication overlap exceeds the permutation null; the protein arm replicates no worse than RNA</td><td class="muted"></td><td><span class="chip">pending</span></td></tr><tr><td><b>P6</b></td><td>RNA on ~1,000 tumours scores at least as well as RNA + protein on 77</td><td class="muted">the practical question</td><td><span class="chip">pending</span></td></tr><tr><td><b>P7</b></td><td>Fewer than 80% of the agent's checkable claims are supported by the held-out data</td><td class="muted">agent audit</td><td><span class="chip">pending</span></td></tr><tr><td><b>P8</b></td><td>The agent's scores track PubMed count (ρ ≥ 0.5) and separate candidates from matched decoys at AUC &lt; 0.7</td><td class="muted">agent audit</td><td><span class="chip">pending</span></td></tr></tbody>
+  </table></div>
+  <p class="note">Committed in <a href="https://github.com/Natalija-Stepurko/brca-target-evidence/blob/main/docs/DESIGN.md">DESIGN.md §8</a> on 2026-10-06. Any later change to
+  the design is logged in its §12 with the commit and the reason.</p>
+</section>
+
+<section class="sec" id="results">
+  <h2>Results</h2>
+  <div class="pending"><span class="chip">pending</span> Each arm against its matched-random floor and the permutation null, per subtype (P1) — fills from <code>results/</code> once stage <code>ladder</code> has run.</div>
+  <div class="pending"><span class="chip">pending</span> Paired differences between arms with bootstrap intervals (P2–P4, P6) — fills from <code>results/</code> once stage <code>ladder</code> has run.</div>
+  <div class="pending"><span class="chip">pending</span> Discovery–replication overlap per arm against the permutation null (P5) — fills from <code>results/</code> once stage <code>replicate</code> has run.</div>
+  <div class="pending"><span class="chip">pending</span> The candidate dossiers: the top genes of the best arm per subtype, each with every rung — fills from <code>results/</code> once stage <code>dossier</code> has run.</div>
+</section>
+
+<section class="sec" id="audit">
+  <h2>The agent audit</h2>
+  <p>Agentic systems now write target rationales. Published evaluations ask whether the system found the
+  right gene or whether a wet-lab experiment worked; none has scored the rationale itself, claim by
+  claim, against held-out evidence while controlling for how famous each gene is.</p>
+  <ol>
+    <li><b>Items.</b> The top-10 genes per subtype from the best arm (30 candidates) and 30 decoys drawn
+    from the same popularity, expression and detection strata that no arm nominated. The agent is not
+    told which is which.</li>
+    <li><b>Agent.</b> One named model, version and knowledge cutoff stated, closed-book and open-book
+    (read access to this repository's frozen tables, nothing else). It returns a target score and a list
+    of typed claims: over-expressed in the subtype, up in tumour vs normal, dependency in matched lines,
+    clinical precedence, restricted in normal tissue.</li>
+    <li><b>Check.</b> Every typed claim is verified automatically against the frozen tables and labelled
+    supported, contradicted or unsupported.</li>
+    <li><b>Report.</b> Faithfulness per claim type and condition; whether the agent's scores separate
+    candidates from decoys; how strongly its scores track PubMed count.</li>
+  </ol>
+  <div class="pending"><span class="chip">pending</span> Faithfulness, decoy discrimination and popularity correlation (P7, P8) — fills from <code>results/</code> once stage <code>audit</code> has run.</div>
+</section>
+
+<section class="sec" id="exome">
+  <h2>From raw reads to a dependency</h2>
+  <p>The tumour mutation calls above arrive pre-processed. To show the step from sequencer output to
+  variants, the SEQC2 reference pair HCC1395 / HCC1395BL — a triple-negative breast-cancer line and its
+  matched normal, with a published high-confidence somatic truth set — is aligned and called from raw
+  exome reads (BWA-MEM2, GATK Mutect2) and the calls are scored against that truth set. HCC1395 is also a
+  CRISPR-screened DepMap line, so its called mutations are traced into its own dependencies and into the
+  basal-like candidate list.</p>
+  <div class="pending"><span class="chip">pending</span> SNV precision and recall against the SEQC2 truth set; mutations traced into dependencies — fills from <code>results/</code> once stage <code>wes</code> has run.</div>
+</section>
+
+<section class="sec" id="data">
+  <h2>Data and licences</h2>
+  <div class="scroll"><table><thead><tr><th>Dataset</th><th>Route</th><th>Licence</th></tr></thead>
+  <tbody><tr><td>TCGA-BRCA: mutations, copy number, RNA-seq, PAM50, survival</td><td>UCSC Xena</td><td>open; TCGA Research Network acknowledged</td></tr><tr><td>CPTAC breast proteome, Mertins 2016 (77 tumours, TCGA barcodes)</td><td>PDC000173 / cBioPortal</td><td>CC BY</td></tr><tr><td>CPTAC breast cohort, Krug 2020 (122 tumours)</td><td>LinkedOmics / cBioPortal</td><td>CC BY</td></tr><tr><td>DepMap Public 24Q4 CRISPR gene effect, model annotations</td><td>figshare 27993248</td><td>CC BY 4.0 (the last release under it; pinned)</td></tr><tr><td>Open Targets Platform 26.09 clinical datasets, tractability</td><td>EBI FTP (parquet)</td><td>CC0; ChEMBL-derived fields CC BY-SA 3.0</td></tr><tr><td>GTEx v10 median gene TPM by tissue</td><td>GTEx portal</td><td>open</td></tr><tr><td>NCBI gene2pubmed (publication counts)</td><td>NCBI FTP</td><td>open</td></tr><tr><td>SEQC2 HCC1395 / HCC1395BL exomes and somatic truth set v1.2.1</td><td>ENA PRJNA489865; NCBI FTP</td><td>open</td></tr><tr><td>50,002-cell breast tumour atlas (study 1)</td><td>CELLxGENE, built in study 1</td><td>CC BY 4.0</td></tr></tbody></table></div>
+  <p class="note">Every file is recorded with its URL, release and sha256 in <code>results/MANIFEST.sha256</code>
+  when stage <code>data</code> runs. No data from Sanger Project Score or Cell Model Passports are used
+  (non-commercial terms). Open Targets' association score is never an input: it contains dependency and
+  literature evidence that would make the truth circular.</p>
+</section>
+
+<section class="sec" id="literature">
+  <h2>Literature</h2>
+  <p>The survey behind the design, with a strength tag on every entry, is in
+  <a href="https://github.com/Natalija-Stepurko/brca-target-evidence/blob/main/research/literature.md">research/literature.md</a>. The references the design rests on most:</p>
+  <ol class="refs"><li>Mertins P et al.. <i>Proteogenomics connects somatic mutations to signalling in breast cancer</i>. Nature 2016. <a href="https://doi.org/10.1038/nature18003">doi</a></li><li>Krug K et al.. <i>Proteogenomic landscape of breast cancer tumorigenesis and targeted therapy</i>. Cell 2020. <a href="https://doi.org/10.1016/j.cell.2020.10.036">doi</a></li><li>Savage SR et al.. <i>Pan-cancer proteogenomics expands the landscape of therapeutic targets</i>. Cell 2024. <a href="https://doi.org/10.1016/j.cell.2024.05.039">doi</a></li><li>Lin HK, Dai J, Pusztai L. <i>Breast-cancer targets from CRISPR dependency screens, by subtype</i>. Breast Cancer Res Treat 2025. <a href="https://doi.org/10.1007/s10549-025-07817-0">doi</a></li><li>Pacini C et al.. <i>A comprehensive clinically informed map of dependencies in cancer cells and framework for target prioritisation</i>. Cancer Cell 2024. <a href="https://doi.org/10.1016/j.ccell.2023.12.016">doi</a></li><li>Rappoport N, Shamir R. <i>Multi-omic and multi-view clustering algorithms: review and cancer benchmark</i>. Nucleic Acids Res 2018. <a href="https://doi.org/10.1093/nar/gky889">doi</a></li><li>Herrmann M et al.. <i>Large-scale benchmark study of survival prediction methods using multi-omics data</i>. Brief Bioinform 2021. <a href="https://doi.org/10.1093/bib/bbaa167">doi</a></li><li>Gonçalves E et al.. <i>Pan-cancer proteomic map of 949 human cell lines</i>. Cancer Cell 2022. <a href="https://doi.org/10.1016/j.ccell.2022.06.010">doi</a></li><li>Minikel EV et al.. <i>Refining the impact of genetic evidence on clinical success</i>. Nature 2024. <a href="https://doi.org/10.1038/s41586-024-07316-0">doi</a></li><li>Haynes WA, Tomczak A, Khatri P. <i>Gene annotation bias impedes biomedical research</i>. Sci Rep 2018. <a href="https://doi.org/10.1038/s41598-018-19333-x">doi</a></li><li>Chang L et al.. <i>Systematic profiling of conditional pathway activation identifies context-dependent synthetic lethalities</i>. Cancer Cell 2021.</li><li>Fang LT et al.. <i>Establishing community reference samples, data and call sets for benchmarking cancer mutation detection (SEQC2)</i>. Nat Biotechnol 2021. <a href="https://doi.org/10.1038/s41587-021-00993-6">doi</a></li></ol>
+</section>
+
+<section class="sec" id="limits">
+  <h2>Limits, stated in advance</h2>
+  <ul>
+    <li><b>Small cohorts.</b> 77 discovery tumours with protein, 122 for replication; 53 breast cell
+    lines, of which only 6–11 are luminal. The luminal arm may be uninformative.</li>
+    <li><b>Weak, partly confounded truth.</b> Dependency tracks expression (hence the matched floor);
+    cell lines drift from tumours; ESR1- and ERBB2-type expression addictions do not reproduce in
+    organoid screens and are flagged. Clinical precedence is small and popularity-biased.</li>
+    <li><b>Asymmetric layers.</b> CPTAC breast has no normal-tissue proteomics, so the tumour-vs-normal
+    gate is RNA-based in every arm.</li>
+    <li><b>Two integration methods only.</b> Equal-weight rank stacking and MOFA+, neither tuned on the
+    truth. Better integration methods remain untested here.</li>
+    <li><b>Knowledge cutoff.</b> The held-out data pre-date current language models' training data, so
+    the agent audit leans on decoys and claim-level checks, with a time-split secondary check.</li>
+  </ul>
+</section>
+
+<footer><p>Built 2026-10-06 from <code>docs/site/build.py</code>. Every number
+  that a pipeline stage produces is read from <code>results/</code> when this page is built; none is typed
+  in. <a href="https://github.com/Natalija-Stepurko/brca-target-evidence">github.com/Natalija-Stepurko/brca-target-evidence</a></p></footer>
+</div>
+<script>
+(function () {
+  const links = [...document.querySelectorAll('.topnav .navlinks a')];
+  const secs = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  let ticking = false;
+  function update() {
+    ticking = false;
+    const y = window.scrollY + 70;
+    let cur = secs[0];
+    for (const s of secs) if (s.offsetTop <= y) cur = s;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) cur = secs[secs.length - 1];
+    links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + cur.id));
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } });
+  update();
+})();
+</script>
+</body>
+</html>
