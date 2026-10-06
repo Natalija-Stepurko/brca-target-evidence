@@ -137,6 +137,25 @@
     "results/report/fig_replication.png",
     "results/report/summary.json"
    ]
+  },
+  {
+   "stage": "wes",
+   "finished": "2026-10-06T18:58:25+00:00",
+   "commit": "d6b1a02",
+   "seconds": 28.2,
+   "params": {
+    "threads": 8,
+    "pad": 100,
+    "pilot_pairs": 1000000,
+    "tools": "bwa 0.7.19, samtools 1.24, GATK 4.6.2.0, bcftools, bedtools (micromamba, no root)"
+   },
+   "outputs": [
+    "results/wes/benchmark.json",
+    "results/wes/coverage.json",
+    "results/wes/mutated_genes.csv",
+    "results/wes/pass_variants_in_target.csv",
+    "results/wes/timings.json"
+   ]
   }
  ]
 }

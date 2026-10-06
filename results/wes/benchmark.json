@@ -1,0 +1,20 @@
+{
+ "snv": {
+  "calls_only": 138,
+  "truth_only": 266,
+  "shared": 893,
+  "precision": 0.8661493695441319,
+  "recall": 0.7704918032786885,
+  "f1": 0.8155251141552512
+ },
+ "indel": {
+  "calls_only": 24,
+  "truth_only": 10,
+  "shared": 38,
+  "precision": 0.6129032258064516,
+  "recall": 0.7916666666666666,
+  "f1": 0.6909090909090909
+ },
+ "eval_region_bp": 80711709,
+ "note": "PASS Mutect2 calls vs SEQC2 v1.2.1 high-confidence somatic calls, both restricted to the exome target intersected with the high-confidence regions; BQSR, germline resource and contamination estimate omitted"
+}

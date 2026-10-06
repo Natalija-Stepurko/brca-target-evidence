@@ -274,6 +274,11 @@ Each entry carries the date, what changed and why. No prediction, endpoint or th
    have a non-normal-like PAM50 call. Discovery: 47 luminal, 18 basal-like, 12 HER2-enriched.
 7. **2026-10-06 — matching covariates for a gene absent from a layer (§7).** In the replication cohort a
    gene missing from Krug's RNA table takes the median expression covariate when strata are formed.
+8. **2026-10-06 — exome module as run (§13).** Aligner: bwa 0.7.19 with the SEQC2-published BWA index of
+   GRCh38.d1.vd1 (the truth set's reference), in place of BWA-MEM2, to avoid building an index. 122 of
+   295,602 target intervals lie on alt contigs the no-alt reference lacks and were dropped. Omitted and
+   stated: base-quality recalibration, the germline resource and the contamination estimate. Evaluation
+   region: target ∩ high-confidence regions, 80.7 Mb; it holds 1,159 high-confidence SNVs and 48 indels.
 
 ## 13. Exome module
 

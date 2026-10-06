@@ -1,0 +1,13 @@
+{
+ "benchmark": 2.5,
+ "genes": 4.9,
+ "threads": 8,
+ "unpack reference": 48.0,
+ "regions": 2.0,
+ "pilot 1M pairs": 45.0,
+ "pilot_seconds_per_million_pairs": 45.0,
+ "align HCC1395": 1177.0,
+ "align HCC1395BL": 1489.0,
+ "coverage": 109.0,
+ "mutect2": 2988.0
+}

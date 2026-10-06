@@ -487,9 +487,11 @@ def wes_html():
     covtxt = "; ".join(f"{sm}: mean {c['mean_target_depth']:.0f}×, {100 * c['fraction_target_ge_20x']:.0f}% of the "
                        f"target at ≥ 20×" for sm, c in cov.items())
     hours = sum(v for k, v in tim.items() if k.startswith("align ")) / 3600
+    def fnum(v):
+        return f"{float(v):+.2f}" if v not in ("", "nan") else "—"
     deprows = "".join(f"<tr><td><b>{esc(g['gene'])}</b></td><td>{g['n_variants']}</td>"
-                      f"<td>{float(g['hcc1395_gene_effect']):+.2f}</td>"
-                      f"<td>{float(g['mean_effect_basal_lines']):+.2f}</td>"
+                      f"<td>{fnum(g['hcc1395_gene_effect'])}</td>"
+                      f"<td>{fnum(g['mean_effect_basal_lines'])}</td>"
                       f"<td>{'yes' if any(g[k] == 'True' for k in g if k.startswith('in_basal_top50')) else ''}</td>"
                       f"<td>{'yes' if g['common_essential'] == 'True' else ''}</td></tr>" for g in dep[:15])
     return (f'<div class="scroll"><table><thead><tr><th>type</th><th>true positives</th><th>false positives</th>'
