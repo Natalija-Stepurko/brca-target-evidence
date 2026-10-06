@@ -15,6 +15,41 @@
     "results/data/discovery_samples.csv",
     "results/MANIFEST.sha256"
    ]
+  },
+  {
+   "stage": "scores",
+   "finished": "2026-10-06T15:56:09+00:00",
+   "commit": "3303f55",
+   "seconds": 16.6,
+   "params": {
+    "gate_hedges_g": 0.5,
+    "cis_spearman_min": 0.3
+   },
+   "outputs": [
+    "results/scores/discovery.csv",
+    "results/scores/gate.csv",
+    "results/scores/krug.csv",
+    "results/scores/summary.json",
+    "results/scores/tcga_all.csv"
+   ]
+  },
+  {
+   "stage": "nominate",
+   "finished": "2026-10-06T15:58:21+00:00",
+   "commit": "3303f55",
+   "seconds": 17.3,
+   "params": {
+    "K": 50,
+    "K_sensitivity": [
+     25,
+     100
+    ],
+    "mofa_factors": 10
+   },
+   "outputs": [
+    "results/nominate/lists_discovery.csv",
+    "results/nominate/positive_controls.csv"
+   ]
   }
  ]
 }
