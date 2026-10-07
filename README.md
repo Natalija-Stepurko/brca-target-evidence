@@ -4,6 +4,10 @@ A pre-registered evaluation of multi-omics target nomination in breast cancer. T
 series; the first, [single-cell cell states and survival](https://github.com/Natalija-Stepurko/single-cell-fm-probing),
 asked whether foundation-model cell states predict patient survival.
 
+Study 3, [brca-spatial-evidence](https://github.com/Natalija-Stepurko/brca-spatial-evidence), takes this
+study's candidates to spatial transcriptomics sections and asks where they are expressed and whether
+histology can see them.
+
 **Status (2026-10-06):** design pre-registered in [`docs/DESIGN.md`](docs/DESIGN.md) before any data were
 downloaded. No results yet. Project page: <https://natalija-stepurko.github.io/brca-target-evidence/>.
 
