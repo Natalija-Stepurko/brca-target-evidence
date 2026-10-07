@@ -60,15 +60,20 @@ for _run in ("SRR7890850", "SRR7890851"):
         INPUTS[f"{_run}_{_i}.fastq.gz"] = (f"ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/00{_run[-1]}/{_run}/"
                                            f"{_run}_{_i}.fastq.gz")
 
-TIMES = {}
+TIMES_PATH = OUT / "timings.json"
+TIMES = json.loads(TIMES_PATH.read_text()) if TIMES_PATH.exists() else {}   # survives a resumed run
 
 
 def sh(cmd: str, log: str | None = None, env_tools=True):
     """Run a shell command inside the micromamba env; raise on failure; time it."""
-    full = f"{MAMBA} run -n wes bash -o pipefail -c {json.dumps(cmd)}" if env_tools else cmd
+    # the command goes through a script file, so nothing in it is re-parsed by an outer shell
+    script = WORK / f".cmd_{abs(hash(cmd))}.sh"
+    script.write_text("set -o pipefail\n" + cmd + "\n")
+    full = f"{MAMBA} run -n wes bash {script}" if env_tools else f"bash {script}"
     t0 = time.time()
     r = subprocess.run(full, shell=True, env={**os.environ, "MAMBA_ROOT_PREFIX": MAMBA_ROOT},
                        capture_output=True, text=True)
+    script.unlink(missing_ok=True)
     if log:
         TIMES[log] = round(time.time() - t0, 1)
     if r.returncode != 0:
@@ -92,6 +97,8 @@ def step(name, outputs, fn):
     t0 = time.time()
     fn()
     TIMES[name] = round(time.time() - t0, 1)
+    TIMES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TIMES_PATH.write_text(json.dumps(TIMES, indent=1) + "\n")
     print(f"          {TIMES[name]:,.0f}s", flush=True)
 
 
@@ -134,12 +141,14 @@ def run():
     def regions():
         # the lifted-over target carries alt-contig intervals; GRCh38.d1.vd1 is a no-alt build, so keep only
         # intervals on contigs the reference has
+        contigs = WORK / "contigs.txt"
+        sh(f"cut -f1 {REF_DIR / 'GRCh38.d1.vd1.fa.fai'} | sed 's/^/^/; s/$/\\t/' > {contigs}")
         sh(f"zcat {DATA / 'S07604624_Covered_human_all_v6_plus_UTR.liftover.to.hg38.bed6.gz'} | cut -f1-4 "
-           f"| awk 'NR==FNR {{ok[$1]=1; next}} ok[$1]' {REF_DIR / 'GRCh38.d1.vd1.fa.fai'} - "
-           f"| sort -k1,1 -k2,2n > {target}")
-        sh(f"bedtools slop -i {target} -g {REF_DIR / 'GRCh38.d1.vd1.fa.fai'} -b {PAD} | bedtools merge > {target_pad}")
+           f"| grep -f {contigs} | sort -k1,1 -k2,2n > {target}")
+        sh(f"bedtools slop -i {target} -g {REF_DIR / 'GRCh38.d1.vd1.fa.fai'} -b {PAD} | sort -k1,1 -k2,2n "
+           f"| bedtools merge > {target_pad}")
         sh(f"sort -k1,1 -k2,2n {DATA / 'High-Confidence_Regions_v1.2.bed'} | cut -f1-3 > {hc}")
-        sh(f"bedtools intersect -a {target} -b {hc} | cut -f1-3 | bedtools merge > {eval_bed}")
+        sh(f"bedtools intersect -a {target} -b {hc} | cut -f1-3 | sort -k1,1 -k2,2n | bedtools merge > {eval_bed}")
     step("regions", [target, target_pad, hc, eval_bed], regions)
 
     # 3. pilot
@@ -212,11 +221,11 @@ def run():
         for kind, truth_name in (("snv", "high-confidence_sSNV_in_HC_regions_v1.2.1.vcf.gz"),
                                  ("indel", "high-confidence_sINDEL_in_HC_regions_v1.2.1.vcf.gz")):
             truth = WORK / f"truth.{kind}.vcf.gz"
-            sh(f"bcftools view -R {eval_bed} {DATA / truth_name} | bcftools norm -f {fa} -m -both -Oz -o {truth} "
+            sh(f"bcftools view -T {eval_bed} {DATA / truth_name} | bcftools norm -f {fa} -m -both -Oz -o {truth} "
                f"&& bcftools index -f {truth}")
-            typ = "snps" if kind == "snv" else "indels"
+            typ = "snp" if kind == "snv" else "indel"
             d = WORK / f"isec.{kind}"
-            sh(f"bcftools isec -v {typ} -p {d} {calls} {truth}")
+            sh(f"bcftools isec -i 'TYPE=\"{typ}\"' -p {d} {calls} {truth}")
             n = {k: int(sh(f"grep -vc '^#' {d}/{f}.vcf || true").strip() or 0)
                  for k, f in (("calls_only", "0000"), ("truth_only", "0001"), ("shared", "0002"))}
             tp, fp, fn = n["shared"], n["calls_only"], n["truth_only"]
