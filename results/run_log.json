@@ -156,6 +156,22 @@
     "results/wes/pass_variants_in_target.csv",
     "results/wes/timings.json"
    ]
+  },
+  {
+   "stage": "audit",
+   "finished": "2026-10-07T10:59:48+00:00",
+   "commit": "4f9155d",
+   "seconds": 0.8,
+   "params": {
+    "model": "claude-sonnet-5-5",
+    "seed": 7,
+    "source": "files"
+   },
+   "outputs": [
+    "results/audit/claims.csv",
+    "results/audit/items.csv",
+    "results/audit/summary.json"
+   ]
   }
  ]
 }

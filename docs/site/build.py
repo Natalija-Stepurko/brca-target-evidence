@@ -310,7 +310,12 @@ PREDICTIONS = [
 
 
 def s_predictions():
-    V = (SUMMARY or {}).get("verdicts", {})
+    V = dict((SUMMARY or {}).get("verdicts", {}))
+    ap = RES / "audit" / "summary.json"
+    if "audit" in STATUS and ap.exists():
+        A = json.loads(ap.read_text())["conditions"]["closed"]       # the pre-registered condition for P7, P8
+        V["P7"] = {"holds": bool(A["P7_holds"])}
+        V["P8"] = {"holds": bool(A["P8_holds"])}
     rows = "".join(f'<tr><td><b>{p}</b></td><td>{esc(t)}</td><td class="muted">{esc(n)}</td>'
                    f'<td>{verdict_chip(V.get(p))}</td></tr>' for p, t, n in PREDICTIONS)
     return f"""<section class="sec" id="predictions">
@@ -453,8 +458,44 @@ def s_audit():
     <li><b>Report.</b> Faithfulness per claim type and condition; whether the agent's scores separate
     candidates from decoys; how strongly its scores track PubMed count.</li>
   </ol>
-  """ + pending("audit", "Faithfulness, decoy discrimination and popularity correlation (P7, P8)") + """
+  """ + audit_html() + """
 </section>"""
+
+
+def audit_html():
+    p = RES / "audit" / "summary.json"
+    if "audit" not in STATUS or not p.exists():
+        return pending("audit", "Faithfulness, decoy discrimination and popularity correlation (P7, P8)")
+    A = json.loads(p.read_text())
+    rows = []
+    for cond, lab in (("closed", "closed-book"), ("open", "open-book")):
+        c = A["conditions"][cond]
+        by = c["faithfulness_by_claim_type"]
+        rows.append(f"<tr><td><b>{lab}</b></td><td>{pct(c['faithfulness_overall'])} of {c['n_claims_checked']}</td>"
+                    f"<td>{pct(by.get('overexpressed_in_subtype'))}</td><td>{pct(by.get('dependency_in_subtype_lines'))}</td>"
+                    f"<td>{pct(by.get('clinical_precedence'))}</td><td>{c['decoy_auc']:.2f}</td>"
+                    f"<td>{c['pubmed_spearman']:.2f}</td><td>{c['mean_score_candidates']:.1f} vs {c['mean_score_decoys']:.1f}</td></tr>")
+    cl, op = A["conditions"]["closed"], A["conditions"]["open"]
+    weakest = min(cl["faithfulness_by_claim_type"], key=cl["faithfulness_by_claim_type"].get)
+    return (f'<p><b>Model: {esc(A["model"])}</b>, {A["n_candidates"]} candidates and {A["n_decoys"]} matched decoys per '
+            f'condition, roles hidden. Every typed claim was checked against the frozen tables.</p>'
+            f'<div class="scroll"><table><thead><tr><th>condition</th><th>claims supported</th>'
+            f'<th>over-expressed in subtype</th><th>dependency</th><th>clinical precedence</th>'
+            f'<th>decoy AUC</th><th>PubMed ρ</th><th>mean score, candidates vs decoys</th></tr></thead>'
+            f'<tbody>{"".join(rows)}</tbody></table></div>'
+            f'<p><b>Closed-book, the agent was more faithful than predicted and more fame-driven than it should be.</b> '
+            f'{pct(cl["faithfulness_overall"])} of its checkable claims held up (P7 predicted under 80%, so P7 '
+            f'{"holds" if cl["P7_holds"] else "fails"}); the weakest claim type was <i>{esc(weakest.replace("_", " "))}</i> '
+            f'({pct(cl["faithfulness_by_claim_type"][weakest])}). Its target scores tracked PubMed count at '
+            f'ρ = {cl["pubmed_spearman"]:.2f} and separated real candidates from look-alike decoys at AUC '
+            f'{cl["decoy_auc"]:.2f} only, so P8 {"holds" if cl["P8_holds"] else "fails"}: from memory, the agent rates '
+            f'genes by how well known they are. <b>Open-book, with the evidence row in front of it,</b> faithfulness rose to '
+            f'{pct(op["faithfulness_overall"])}, decoy discrimination to AUC {op["decoy_auc"]:.2f} and the popularity '
+            f'correlation fell to ρ = {op["pubmed_spearman"]:.2f} (P8 {"holds" if op["P8_holds"] else "fails"} in this '
+            f'condition). The practical reading: an agent that writes target rationales needs the evidence in context; '
+            f'from memory alone its ranking is largely a popularity ranking.</p>'
+            f'<p class="note">Full claim table: <a href="{REPO}/blob/main/results/audit/claims.csv">results/audit/claims.csv</a>. '
+            f'How the agent was run, and what that changes from §9 of the design, is DESIGN §12 entry 9.</p>')
 
 
 def s_exome():

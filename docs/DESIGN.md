@@ -279,6 +279,13 @@ Each entry carries the date, what changed and why. No prediction, endpoint or th
    295,602 target intervals lie on alt contigs the no-alt reference lacks and were dropped. Omitted and
    stated: base-quality recalibration, the germline resource and the contamination estimate. Evaluation
    region: target ∩ high-confidence regions, 80.7 Mb; it holds 1,159 high-confidence SNVs and 48 indels.
+9. **2026-10-07 — agent audit as run (§9).** The agent was `claude-sonnet-5-5`, called as six subagent runs of
+   a coding assistant (one per condition and subtype, 20 genes per run in one prompt) in place of one API
+   call per gene; no API key was available. Closed-book was enforced by instruction and verified
+   afterwards from each run's transcript: the only tool call in every run was the hand-back of the
+   report. The open-book condition received the frozen evidence row inline. Agents wrote the subtype
+   label in several spellings; it was normalised to the task's subtype before scoring. P7 and P8 are
+   read on the closed-book condition, as §9 intends; the open-book figures are reported alongside.
 
 ## 13. Exome module
 

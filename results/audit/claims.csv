@@ -1,0 +1,362 @@
+condition,gene,subtype,role,target_score,claim_type,direction,confidence,text,label
+closed,ADAM8,basal,decoy,3.0,overexpressed_in_subtype,yes,0.55,ADAM8 is reported higher in TNBC/basal-like tumours and linked to invasion and brain metastasis.,contradicted
+closed,ADAM8,basal,decoy,3.0,dependency_in_subtype_lines,no,0.65,ADAM8 is not a broad CRISPR dependency in breast lines.,supported
+closed,ADAM8,basal,decoy,3.0,clinical_precedence,no,0.8,"Only preclinical ADAM8 inhibitors and antibodies exist, with no breast cancer trial.",supported
+closed,RRP1B,basal,candidate,1.0,other,yes,0.4,"RRP1B is a germline metastasis-susceptibility modifier, with a context-dependent role in tumour progression.",unsupported
+closed,RRP1B,basal,candidate,1.0,dependency_in_subtype_lines,no,0.7,It is not a strong dependency in basal lines.,supported
+closed,RRP1B,basal,candidate,1.0,clinical_precedence,no,0.9,No drug against RRP1B has been tested in clinical trials.,supported
+closed,SRPK1,basal,candidate,4.0,tumour_vs_normal,yes,0.6,SRPK1 is upregulated in breast tumours versus normal tissue.,supported
+closed,SRPK1,basal,candidate,4.0,dependency_in_subtype_lines,yes,0.4,SRPK1 shows moderate dependency in some breast lines.,contradicted
+closed,SRPK1,basal,candidate,4.0,clinical_precedence,no,0.75,"SRPK1 inhibitors such as SPHINX31 are preclinical, and none has reached a breast cancer trial.",supported
+closed,SRPK1,basal,candidate,4.0,normal_tissue_restricted,no,0.8,SRPK1 is broadly expressed in normal tissues.,supported
+closed,CDC123,basal,candidate,2.0,dependency_in_subtype_lines,yes,0.6,CDC123 is a common-essential gene needed for eIF2 assembly.,supported
+closed,CDC123,basal,candidate,2.0,normal_tissue_restricted,no,0.9,It is ubiquitously expressed.,supported
+closed,CDC123,basal,candidate,2.0,clinical_precedence,no,0.9,No drug against CDC123 has been tested clinically.,supported
+closed,CDCA8,basal,candidate,4.0,overexpressed_in_subtype,yes,0.85,"CDCA8, a chromosomal passenger complex member, is a proliferation gene highly expressed in basal-like tumours.",supported
+closed,CDCA8,basal,candidate,4.0,dependency_in_subtype_lines,yes,0.8,CDCA8 is commonly essential in CRISPR screens.,supported
+closed,CDCA8,basal,candidate,4.0,clinical_precedence,no,0.7,"No CDCA8-specific drug exists, though Aurora B inhibitors in the same complex have been trialled.",supported
+closed,CDCA8,basal,candidate,4.0,normal_tissue_restricted,yes,0.5,CDCA8 expression is low in most non-proliferating normal tissues.,contradicted
+closed,PRPF3,basal,decoy,2.0,dependency_in_subtype_lines,yes,0.7,PRPF3 is a core spliceosome gene and is commonly essential.,supported
+closed,PRPF3,basal,decoy,2.0,overexpressed_in_subtype,no,0.5,It is not specifically elevated in basal-like tumours.,contradicted
+closed,PRPF3,basal,decoy,2.0,clinical_precedence,no,0.9,No PRPF3 drug exists.,supported
+closed,VDR,basal,decoy,2.0,overexpressed_in_subtype,no,0.6,"VDR is not higher in basal-like tumours than in other breast tumours, and is often lower.",supported
+closed,VDR,basal,decoy,2.0,dependency_in_subtype_lines,no,0.8,VDR knockout does not reduce growth of basal lines.,supported
+closed,VDR,basal,decoy,2.0,clinical_precedence,yes,0.6,"Calcitriol and vitamin D analogues have been trialled in breast cancer, mainly as agonists.",supported
+closed,VDR,basal,decoy,2.0,normal_tissue_restricted,no,0.8,VDR is widely expressed in normal tissues.,supported
+closed,PHLDA2,basal,decoy,1.0,other,yes,0.4,"PHLDA2 is an imprinted gene, with variable and context-dependent expression in tumours.",unsupported
+closed,PHLDA2,basal,decoy,1.0,dependency_in_subtype_lines,no,0.8,PHLDA2 is not a growth dependency.,supported
+closed,PHLDA2,basal,decoy,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,METTL13,basal,decoy,2.0,tumour_vs_normal,yes,0.4,"METTL13, a translation-elongation methyltransferase, is reported upregulated in some cancers.",supported
+closed,METTL13,basal,decoy,2.0,dependency_in_subtype_lines,no,0.55,The dependency in breast lines is weak or variable.,supported
+closed,METTL13,basal,decoy,2.0,clinical_precedence,no,0.95,No drug has entered trials.,supported
+closed,E2F3,basal,candidate,3.0,overexpressed_in_subtype,yes,0.75,"E2F3 is higher in basal-like tumours, which have RB1 loss and cell-cycle activation, and is sometimes amplified.",supported
+closed,E2F3,basal,candidate,3.0,dependency_in_subtype_lines,yes,0.4,"E2F3 shows some dependency, but E2F family redundancy limits it.",contradicted
+closed,E2F3,basal,candidate,3.0,clinical_precedence,no,0.85,There are no direct E2F inhibitors in trials.,supported
+closed,NCAPD2,basal,candidate,3.0,overexpressed_in_subtype,yes,0.7,"NCAPD2, a condensin I subunit, tracks with proliferation and is higher in basal-like tumours.",supported
+closed,NCAPD2,basal,candidate,3.0,dependency_in_subtype_lines,yes,0.75,It is commonly essential.,supported
+closed,NCAPD2,basal,candidate,3.0,clinical_precedence,no,0.9,No drug against condensin has entered trials.,supported
+closed,ANP32E,basal,candidate,3.0,overexpressed_in_subtype,yes,0.65,"ANP32E, an H2A.Z chaperone, is higher in basal-like and TNBC tumours and is linked to poor prognosis.",supported
+closed,ANP32E,basal,candidate,3.0,dependency_in_subtype_lines,no,0.6,It is not a strong dependency in most lines.,supported
+closed,ANP32E,basal,candidate,3.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,MBOAT7,basal,decoy,1.0,other,yes,0.3,MBOAT7 is a lipid-remodelling acyltransferase studied mostly in liver disease.,unsupported
+closed,MBOAT7,basal,decoy,1.0,dependency_in_subtype_lines,no,0.8,It is not a dependency in breast lines.,supported
+closed,MBOAT7,basal,decoy,1.0,clinical_precedence,no,0.95,No breast cancer drug exists.,supported
+closed,FLVCR1,basal,decoy,2.0,dependency_in_subtype_lines,yes,0.35,"FLVCR1 is a choline transporter that is a dependency in some lines, depending on choline supply.",contradicted
+closed,FLVCR1,basal,decoy,2.0,normal_tissue_restricted,no,0.8,It is broadly expressed in normal tissues.,supported
+closed,FLVCR1,basal,decoy,2.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,SUV39H2,basal,candidate,2.0,overexpressed_in_subtype,yes,0.4,"SUV39H2, an H3K9 methyltransferase, is modestly elevated in proliferative tumours.",supported
+closed,SUV39H2,basal,candidate,2.0,dependency_in_subtype_lines,no,0.7,It is not an essential gene in breast lines.,supported
+closed,SUV39H2,basal,candidate,2.0,clinical_precedence,no,0.9,SUV39 inhibitors such as chaetocin have not reached breast cancer trials.,supported
+closed,BCL2L1,basal,decoy,6.0,dependency_in_subtype_lines,yes,0.7,"BCL-XL knockout reduces growth in many TNBC/basal lines, which rely on BCL-XL for survival.",supported
+closed,BCL2L1,basal,decoy,6.0,clinical_precedence,yes,0.7,Navitoclax (BCL-2/BCL-XL/BCL-W) and the BCL-XL degrader DT2216 have been tested in solid tumours including breast.,contradicted
+closed,BCL2L1,basal,decoy,6.0,tumour_vs_normal,yes,0.5,"BCL2L1 is higher in breast tumours, and 20q11 gain is common.",supported
+closed,BCL2L1,basal,decoy,6.0,normal_tissue_restricted,no,0.9,"BCL-XL is needed in platelets and is broadly expressed, causing thrombocytopenia.",supported
+closed,HMGA1,basal,candidate,3.0,overexpressed_in_subtype,yes,0.7,HMGA1 is highly expressed in basal-like and TNBC tumours and is linked to poor outcome.,supported
+closed,HMGA1,basal,candidate,3.0,tumour_vs_normal,yes,0.8,It is higher in tumours than in normal breast.,supported
+closed,HMGA1,basal,candidate,3.0,dependency_in_subtype_lines,no,0.5,Dependency is modest and variable.,contradicted
+closed,HMGA1,basal,candidate,3.0,clinical_precedence,no,0.9,No direct HMGA1 drug has been trialled.,supported
+closed,STK4,basal,decoy,1.0,other,yes,0.55,STK4 (MST1) is a Hippo pathway kinase with tumour-suppressive function.,unsupported
+closed,STK4,basal,decoy,1.0,dependency_in_subtype_lines,no,0.85,Knockout does not reduce growth.,supported
+closed,STK4,basal,decoy,1.0,clinical_precedence,no,0.9,No inhibitor has been trialled in breast cancer.,supported
+closed,CDCA2,basal,candidate,3.0,overexpressed_in_subtype,yes,0.75,CDCA2 (Repo-Man) is a proliferation gene higher in basal-like tumours.,supported
+closed,CDCA2,basal,candidate,3.0,dependency_in_subtype_lines,no,0.55,It is not consistently essential.,supported
+closed,CDCA2,basal,candidate,3.0,normal_tissue_restricted,yes,0.55,Its normal tissue expression is low outside proliferating cells.,contradicted
+closed,CDCA2,basal,candidate,3.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,TMEM165,basal,decoy,1.0,other,yes,0.3,TMEM165 is a Golgi Ca/Mn transporter involved in glycosylation.,unsupported
+closed,TMEM165,basal,decoy,1.0,dependency_in_subtype_lines,no,0.8,It is not a dependency in breast lines.,supported
+closed,TMEM165,basal,decoy,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,ABCD3,her2,decoy,1.0,dependency_in_subtype_lines,no,0.7,"Peroxisomal transporter, not a recognised dependency in breast lines.",supported
+closed,ABCD3,her2,decoy,1.0,clinical_precedence,no,0.9,No drug against ABCD3 has reached breast cancer trials.,supported
+closed,UBE2I,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.6,SUMO E2 enzyme UBC9 is broadly essential in cell lines.,supported
+closed,UBE2I,her2,decoy,3.0,overexpressed_in_subtype,no,0.5,No clear HER2-enriched-specific upregulation.,supported
+closed,UBE2I,her2,decoy,3.0,clinical_precedence,no,0.7,SUMOylation inhibitors (e.g. TAK-981 targets SAE) are not UBE2I-directed in breast trials.,supported
+closed,OTUB2,her2,candidate,1.0,dependency_in_subtype_lines,no,0.7,Deubiquitinase with little evidence of essentiality in breast lines.,supported
+closed,OTUB2,her2,candidate,1.0,clinical_precedence,no,0.9,No clinical-stage OTUB2 drug.,supported
+closed,DARS2,her2,decoy,1.0,dependency_in_subtype_lines,no,0.5,"Mitochondrial aspartyl-tRNA synthetase, modest or no dependency.",supported
+closed,DARS2,her2,decoy,1.0,clinical_precedence,no,0.9,No clinical drug.,supported
+closed,COPS5,her2,decoy,3.0,tumour_vs_normal,yes,0.5,CSN5/JAB1 is upregulated in several tumours including breast.,supported
+closed,COPS5,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.6,Commonly essential in cell lines.,supported
+closed,COPS5,her2,decoy,3.0,clinical_precedence,no,0.8,CSN5 inhibitors are preclinical.,supported
+closed,BAZ1B,her2,decoy,1.0,dependency_in_subtype_lines,no,0.5,Not a strong dependency in breast lines.,supported
+closed,BAZ1B,her2,decoy,1.0,clinical_precedence,no,0.9,No clinical drug.,supported
+closed,CLPB,her2,candidate,2.0,dependency_in_subtype_lines,no,0.4,"Mitochondrial chaperone, dependency known mainly in AML.",supported
+closed,CLPB,her2,candidate,2.0,clinical_precedence,no,0.9,No clinical drug in breast cancer.,supported
+closed,KPNB1,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.7,Importin beta-1 is broadly essential.,supported
+closed,KPNB1,her2,decoy,3.0,tumour_vs_normal,yes,0.5,Elevated in many tumours.,supported
+closed,KPNB1,her2,decoy,3.0,clinical_precedence,no,0.7,Importazole and similar compounds are preclinical.,supported
+closed,ATP6V1D,her2,candidate,2.0,dependency_in_subtype_lines,yes,0.5,V-ATPase subunits are commonly essential.,supported
+closed,ATP6V1D,her2,candidate,2.0,normal_tissue_restricted,no,0.8,Ubiquitously expressed.,supported
+closed,ERBB2,her2,candidate,10.0,overexpressed_in_subtype,yes,0.99,Amplified and overexpressed by definition in HER2-enriched tumours.,supported
+closed,ERBB2,her2,candidate,10.0,tumour_vs_normal,yes,0.98,Much higher than in normal breast.,supported
+closed,ERBB2,her2,candidate,10.0,dependency_in_subtype_lines,yes,0.95,HER2-amplified lines are strongly dependent on ERBB2.,supported
+closed,ERBB2,her2,candidate,10.0,clinical_precedence,yes,0.99,"Trastuzumab, pertuzumab, T-DXd, tucatinib, lapatinib are approved.",supported
+closed,KIF26B,her2,decoy,1.0,overexpressed_in_subtype,no,0.5,No known HER2-enriched association.,contradicted
+closed,KIF26B,her2,decoy,1.0,dependency_in_subtype_lines,no,0.7,Not essential in breast lines.,supported
+closed,GRB7,her2,candidate,4.0,overexpressed_in_subtype,yes,0.95,Co-amplified with ERBB2 on 17q12 and strongly overexpressed.,supported
+closed,GRB7,her2,candidate,4.0,tumour_vs_normal,yes,0.85,Higher in HER2+ tumours than normal breast.,supported
+closed,GRB7,her2,candidate,4.0,dependency_in_subtype_lines,no,0.5,Dependency is modest and probably confounded by ERBB2 co-amplification.,supported
+closed,GRB7,her2,candidate,4.0,clinical_precedence,no,0.9,No GRB7 drug in trials.,supported
+closed,LACTB,her2,decoy,1.0,tumour_vs_normal,no,0.6,Reported as a tumour suppressor in breast cancer.,contradicted
+closed,LACTB,her2,decoy,1.0,clinical_precedence,no,0.9,No drug.,supported
+closed,CHMP5,her2,decoy,1.0,dependency_in_subtype_lines,no,0.5,ESCRT-III component with weak breast dependency evidence.,supported
+closed,CHMP5,her2,decoy,1.0,clinical_precedence,no,0.9,No drug.,supported
+closed,RRN3,her2,decoy,2.0,dependency_in_subtype_lines,yes,0.5,"Pol I initiation factor, commonly essential.",supported
+closed,RRN3,her2,decoy,2.0,clinical_precedence,no,0.7,Pol I inhibitors (CX-5461) act through other mechanisms.,supported
+closed,GOLGA5,her2,candidate,1.0,dependency_in_subtype_lines,no,0.7,"Golgin, not an essential gene in breast lines.",supported
+closed,GOLGA5,her2,candidate,1.0,clinical_precedence,no,0.95,No drug.,supported
+closed,PSMD3,her2,candidate,3.0,overexpressed_in_subtype,yes,0.6,Located at 17q21 near ERBB2 and often co-amplified and upregulated in HER2+ tumours.,supported
+closed,PSMD3,her2,candidate,3.0,dependency_in_subtype_lines,yes,0.6,"Proteasome regulatory subunit, commonly essential.",supported
+closed,PSMD3,her2,candidate,3.0,clinical_precedence,no,0.6,"Proteasome inhibitors target catalytic subunits, not PSMD3.",contradicted
+closed,AKT1,her2,candidate,5.0,clinical_precedence,yes,0.9,Capivasertib (approved in HR+ disease) and ipatasertib have been trialled in breast cancer.,supported
+closed,AKT1,her2,candidate,5.0,dependency_in_subtype_lines,yes,0.4,"Partial dependency in HER2-amplified lines, buffered by AKT2.",contradicted
+closed,AKT1,her2,candidate,5.0,overexpressed_in_subtype,no,0.6,"Activity is driven by pathway signalling, not mRNA enrichment.",contradicted
+closed,ALDH18A1,her2,candidate,2.0,tumour_vs_normal,yes,0.4,"Proline biosynthesis enzyme P5CS, upregulated in some cancers.",supported
+closed,ALDH18A1,her2,candidate,2.0,clinical_precedence,no,0.9,No drug.,supported
+closed,CDK12,her2,candidate,5.0,overexpressed_in_subtype,yes,0.7,Adjacent to ERBB2 on 17q12 and co-amplified in HER2+ tumours.,supported
+closed,CDK12,her2,candidate,5.0,dependency_in_subtype_lines,yes,0.55,HER2-amplified lines show sensitivity to CDK12 loss or inhibition.,supported
+closed,CDK12,her2,candidate,5.0,clinical_precedence,no,0.5,Selective CDK12 inhibitors are preclinical or early phase; dinaciclib is non-selective.,supported
+closed,FAF2,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.6,FAF2 is not a common essential or luminal-selective dependency.,supported
+closed,FAF2,luminal,candidate,1.0,clinical_precedence,no,0.9,No FAF2-directed drug has entered breast cancer trials.,supported
+closed,HNRNPL,luminal,decoy,3.0,dependency_in_subtype_lines,yes,0.5,"HNRNPL is a broadly essential splicing factor, so knockout likely reduces growth.",supported
+closed,HNRNPL,luminal,decoy,3.0,normal_tissue_restricted,no,0.8,HNRNPL is ubiquitously expressed in normal tissues.,supported
+closed,HNRNPL,luminal,decoy,3.0,clinical_precedence,no,0.9,No HNRNPL drug has reached breast cancer trials.,supported
+closed,C1orf122,luminal,decoy,1.0,dependency_in_subtype_lines,no,0.7,C1orf122 is poorly characterised and not a known dependency.,supported
+closed,C1orf122,luminal,decoy,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,CCDC125,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.7,CCDC125 is not known to be required for breast line growth.,supported
+closed,CCDC125,luminal,candidate,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,TADA1,luminal,decoy,2.0,dependency_in_subtype_lines,yes,0.3,TADA1 is a SAGA component with modest dependency in some lines.,contradicted
+closed,TADA1,luminal,decoy,2.0,clinical_precedence,no,0.9,No TADA1 drug has reached breast cancer trials.,supported
+closed,RHOC,luminal,decoy,2.0,tumour_vs_normal,yes,0.5,RHOC is associated with invasion and metastasis in breast tumours.,supported
+closed,RHOC,luminal,decoy,2.0,dependency_in_subtype_lines,no,0.7,RHOC knockout does not strongly reduce growth in luminal lines.,supported
+closed,RHOC,luminal,decoy,2.0,clinical_precedence,no,0.85,No RHOC-specific drug has reached breast cancer trials.,supported
+closed,FAAH,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.8,FAAH is not required for breast line growth.,supported
+closed,FAAH,luminal,candidate,1.0,clinical_precedence,no,0.8,"FAAH inhibitors were tested in pain and anxiety, not breast cancer.",supported
+closed,DDX54,luminal,decoy,3.0,dependency_in_subtype_lines,yes,0.6,DDX54 is an essential ribosome-biogenesis helicase.,supported
+closed,DDX54,luminal,decoy,3.0,normal_tissue_restricted,no,0.8,DDX54 is expressed broadly in normal tissues.,supported
+closed,MCCC2,luminal,candidate,3.0,tumour_vs_normal,yes,0.4,MCCC2 is reported as upregulated in some tumours.,supported
+closed,MCCC2,luminal,candidate,3.0,dependency_in_subtype_lines,no,0.6,Leucine catabolism is generally non-essential in culture.,supported
+closed,MCCC2,luminal,candidate,3.0,clinical_precedence,no,0.9,No drug has been tested.,supported
+closed,PPP2CA,luminal,candidate,3.0,dependency_in_subtype_lines,yes,0.6,PP2A catalytic subunit is broadly essential.,supported
+closed,PPP2CA,luminal,candidate,3.0,clinical_precedence,no,0.6,"PP2A inhibitors (LB-100) reached trials in other cancers, with little precedent in breast.",supported
+closed,PPP2CA,luminal,candidate,3.0,normal_tissue_restricted,no,0.95,PPP2CA is ubiquitous.,supported
+closed,HSPH1,luminal,decoy,3.0,tumour_vs_normal,yes,0.5,HSP110 is elevated in many tumours.,supported
+closed,HSPH1,luminal,decoy,3.0,dependency_in_subtype_lines,no,0.5,"HSPH1 has a modest dependency effect, partly buffered by other chaperones.",supported
+closed,HSPH1,luminal,decoy,3.0,clinical_precedence,no,0.8,No HSPH1 drug has reached breast cancer trials.,supported
+closed,GNL3,luminal,decoy,3.0,dependency_in_subtype_lines,yes,0.6,Nucleostemin is commonly essential for proliferation.,supported
+closed,GNL3,luminal,decoy,3.0,tumour_vs_normal,yes,0.5,GNL3 is higher in proliferating tumour tissue.,supported
+closed,GNL3,luminal,decoy,3.0,clinical_precedence,no,0.9,No drug exists.,supported
+closed,NCAPG,luminal,decoy,4.0,tumour_vs_normal,yes,0.8,Condensin subunit NCAPG is strongly upregulated in breast tumours.,supported
+closed,NCAPG,luminal,decoy,4.0,overexpressed_in_subtype,yes,0.4,It tracks proliferation and is higher in high-grade luminal B tumours.,contradicted
+closed,NCAPG,luminal,decoy,4.0,dependency_in_subtype_lines,yes,0.5,Condensin loss impairs mitosis in cell lines.,supported
+closed,NCAPG,luminal,decoy,4.0,clinical_precedence,no,0.9,No condensin inhibitor has reached breast trials.,supported
+closed,GATA3,luminal,candidate,5.0,overexpressed_in_subtype,yes,0.95,"GATA3 is a luminal lineage marker, high in ER+ tumours.",supported
+closed,GATA3,luminal,candidate,5.0,dependency_in_subtype_lines,yes,0.7,Luminal lines such as MCF7 and T47D depend on GATA3.,supported
+closed,GATA3,luminal,candidate,5.0,clinical_precedence,no,0.85,"No GATA3-directed drug has reached breast trials, though a GATA3 antisense agent was tested in asthma.",supported
+closed,GATA3,luminal,candidate,5.0,normal_tissue_restricted,no,0.8,"GATA3 is expressed in T cells, kidney and other tissues.",supported
+closed,EIF2S2,luminal,decoy,3.0,dependency_in_subtype_lines,yes,0.7,eIF2 beta is a common-essential translation factor.,supported
+closed,EIF2S2,luminal,decoy,3.0,normal_tissue_restricted,no,0.95,EIF2S2 is ubiquitous.,supported
+closed,PCYOX1L,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.8,PCYOX1L is not required for growth.,supported
+closed,PCYOX1L,luminal,candidate,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,FOXA1,luminal,candidate,6.0,overexpressed_in_subtype,yes,0.9,FOXA1 is higher in ER+ luminal tumours and is an ER pioneer factor.,supported
+closed,FOXA1,luminal,candidate,6.0,dependency_in_subtype_lines,yes,0.85,Luminal lines depend on FOXA1 for ER programmes and growth.,supported
+closed,FOXA1,luminal,candidate,6.0,clinical_precedence,no,0.85,No FOXA1-directed drug has reached trials.,supported
+closed,FOXA1,luminal,candidate,6.0,normal_tissue_restricted,no,0.7,"FOXA1 is expressed in liver, prostate and other tissues.",supported
+closed,BLZF1,luminal,decoy,1.0,dependency_in_subtype_lines,no,0.8,BLZF1 (Golgin-45) is not a growth dependency.,supported
+closed,BLZF1,luminal,decoy,1.0,clinical_precedence,no,0.95,No drug exists.,supported
+closed,MAPK9,luminal,candidate,2.0,dependency_in_subtype_lines,no,0.7,JNK2 knockout does not strongly reduce luminal line growth.,supported
+closed,MAPK9,luminal,candidate,2.0,clinical_precedence,yes,0.4,"JNK inhibitors have reached early clinical trials in other diseases, with little precedent in breast.",contradicted
+closed,CXXC5,luminal,candidate,3.0,overexpressed_in_subtype,yes,0.6,CXXC5 is estrogen-induced and higher in ER+ tumours.,supported
+closed,CXXC5,luminal,candidate,3.0,dependency_in_subtype_lines,no,0.5,It is not a strong growth dependency.,supported
+closed,CXXC5,luminal,candidate,3.0,clinical_precedence,no,0.9,No drug exists.,supported
+open,ADAM8,basal,decoy,1.0,overexpressed_in_subtype,no,0.6,RNA g is only 0.32 and protein g 0.15 versus other breast tumours.,supported
+open,ADAM8,basal,decoy,1.0,tumour_vs_normal,yes,0.7,Tumour vs normal g is 1.74.,supported
+open,ADAM8,basal,decoy,1.0,dependency_in_subtype_lines,no,0.9,Mean effect is +0.16 with 0 dependent lines.,supported
+open,ADAM8,basal,decoy,1.0,normal_tissue_restricted,no,0.9,Other tissues reach 317 TPM against 4.8 in breast.,supported
+open,RRP1B,basal,candidate,1.5,overexpressed_in_subtype,yes,0.7,RNA g 1.18 and protein g 0.68 in basal-like tumours.,supported
+open,RRP1B,basal,candidate,1.5,dependency_in_subtype_lines,no,0.9,"Mean effect +0.09, 0 dependent lines.",supported
+open,RRP1B,basal,candidate,1.5,normal_tissue_restricted,no,0.85,Other tissues reach 48 TPM against 16 in breast.,supported
+open,SRPK1,basal,candidate,3.0,overexpressed_in_subtype,yes,0.8,RNA g 1.71 and protein g 1.16 are both raised in basal-like tumours.,supported
+open,SRPK1,basal,candidate,3.0,tumour_vs_normal,yes,0.7,Tumour vs normal g is 1.26.,supported
+open,SRPK1,basal,candidate,3.0,dependency_in_subtype_lines,no,0.8,Mean effect -0.12 with 0 dependent lines.,supported
+open,SRPK1,basal,candidate,3.0,normal_tissue_restricted,no,0.85,Other tissues reach 48 TPM against 9.6 in breast.,supported
+open,CDC123,basal,candidate,3.5,overexpressed_in_subtype,yes,0.75,RNA g 1.43 and protein g 0.55.,supported
+open,CDC123,basal,candidate,3.5,tumour_vs_normal,yes,0.6,Tumour vs normal g is 0.90.,supported
+open,CDC123,basal,candidate,3.5,dependency_in_subtype_lines,yes,0.9,Mean effect -1.74 with 26 dependent lines.,supported
+open,CDC123,basal,candidate,3.5,normal_tissue_restricted,no,0.9,Other tissues reach 174 TPM against 61 in breast.,supported
+open,CDCA8,basal,candidate,6.0,overexpressed_in_subtype,yes,0.85,RNA g 1.61 and protein g 0.76.,supported
+open,CDCA8,basal,candidate,6.0,tumour_vs_normal,yes,0.9,Tumour vs normal g is 2.65.,supported
+open,CDCA8,basal,candidate,6.0,dependency_in_subtype_lines,yes,0.9,Mean effect -1.32 with 24 dependent lines.,supported
+open,CDCA8,basal,candidate,6.0,normal_tissue_restricted,no,0.7,"Breast is very low at 1.6 TPM but other tissues reach 102 TPM, so the restriction criterion fails.",supported
+open,PRPF3,basal,decoy,3.0,overexpressed_in_subtype,yes,0.6,"RNA g 0.77 and protein g 0.64, moderate.",supported
+open,PRPF3,basal,decoy,3.0,tumour_vs_normal,yes,0.6,Tumour vs normal g is 0.74.,supported
+open,PRPF3,basal,decoy,3.0,dependency_in_subtype_lines,yes,0.85,Mean effect -0.91 with 25 dependent lines.,supported
+open,PRPF3,basal,decoy,3.0,normal_tissue_restricted,no,0.85,Other tissues reach 64 TPM against 40 in breast.,supported
+open,VDR,basal,decoy,1.5,overexpressed_in_subtype,no,0.7,RNA g -0.15 and protein g 0.12.,supported
+open,VDR,basal,decoy,1.5,clinical_precedence,yes,0.6,"Clinical stage 4 is recorded, but the evidence row gives no basal-specific benefit.",supported
+open,VDR,basal,decoy,1.5,dependency_in_subtype_lines,no,0.9,Mean effect -0.10 with 1 dependent line.,supported
+open,VDR,basal,decoy,1.5,normal_tissue_restricted,no,0.85,Other tissues reach 50 TPM against 6 in breast.,supported
+open,PHLDA2,basal,decoy,0.5,overexpressed_in_subtype,no,0.7,RNA g 0.17 and protein g -0.35.,supported
+open,PHLDA2,basal,decoy,0.5,tumour_vs_normal,yes,0.5,Tumour vs normal g is 0.81.,supported
+open,PHLDA2,basal,decoy,0.5,dependency_in_subtype_lines,no,0.9,"Mean effect +0.01, 0 dependent lines.",supported
+open,METTL13,basal,decoy,0.5,overexpressed_in_subtype,no,0.8,RNA g 0.05 and protein g -0.13.,supported
+open,METTL13,basal,decoy,0.5,tumour_vs_normal,yes,0.6,Tumour vs normal g is 1.06.,supported
+open,METTL13,basal,decoy,0.5,dependency_in_subtype_lines,no,0.9,"Mean effect -0.04, 0 dependent lines.",supported
+open,E2F3,basal,candidate,2.5,overexpressed_in_subtype,yes,0.7,"RNA g 1.91, though protein g is only 0.36.",supported
+open,E2F3,basal,candidate,2.5,tumour_vs_normal,yes,0.65,Tumour vs normal g is 1.04.,supported
+open,E2F3,basal,candidate,2.5,dependency_in_subtype_lines,no,0.75,Mean effect -0.19 with 3 dependent lines.,supported
+open,E2F3,basal,candidate,2.5,normal_tissue_restricted,no,0.8,Other tissues reach 19 TPM against 6.6 in breast.,supported
+open,NCAPD2,basal,candidate,5.0,overexpressed_in_subtype,yes,0.8,RNA g 1.21 and protein g 0.64.,supported
+open,NCAPD2,basal,candidate,5.0,tumour_vs_normal,yes,0.7,Tumour vs normal g is 0.95.,supported
+open,NCAPD2,basal,candidate,5.0,dependency_in_subtype_lines,yes,0.9,Mean effect -1.56 with 26 dependent lines.,supported
+open,NCAPD2,basal,candidate,5.0,normal_tissue_restricted,no,0.9,Other tissues reach 131 TPM against 14 in breast.,supported
+open,ANP32E,basal,candidate,2.5,overexpressed_in_subtype,yes,0.8,RNA g 1.82 and protein g 1.18.,supported
+open,ANP32E,basal,candidate,2.5,tumour_vs_normal,yes,0.5,Tumour vs normal g is 0.51.,supported
+open,ANP32E,basal,candidate,2.5,dependency_in_subtype_lines,no,0.8,Mean effect -0.28 with 2 dependent lines.,supported
+open,ANP32E,basal,candidate,2.5,normal_tissue_restricted,no,0.9,Other tissues reach 160 TPM against 24 in breast.,supported
+open,MBOAT7,basal,decoy,0.5,overexpressed_in_subtype,no,0.85,"RNA g -0.63 and protein g -0.69, lower in the subtype.",supported
+open,MBOAT7,basal,decoy,0.5,tumour_vs_normal,yes,0.7,Tumour vs normal g is 1.80.,supported
+open,MBOAT7,basal,decoy,0.5,dependency_in_subtype_lines,no,0.9,"Mean effect +0.10, 0 dependent lines.",supported
+open,FLVCR1,basal,decoy,0.5,overexpressed_in_subtype,no,0.7,RNA g -0.44 and protein g 0.06.,supported
+open,FLVCR1,basal,decoy,0.5,tumour_vs_normal,yes,0.7,Tumour vs normal g is 2.08.,supported
+open,FLVCR1,basal,decoy,0.5,dependency_in_subtype_lines,no,0.85,Mean effect -0.07 with 2 dependent lines.,supported
+open,SUV39H2,basal,candidate,2.0,overexpressed_in_subtype,yes,0.75,RNA g 1.56 and protein g 0.69.,supported
+open,SUV39H2,basal,candidate,2.0,tumour_vs_normal,yes,0.65,Tumour vs normal g is 1.01.,supported
+open,SUV39H2,basal,candidate,2.0,dependency_in_subtype_lines,no,0.9,"Mean effect +0.03, 0 dependent lines.",supported
+open,SUV39H2,basal,candidate,2.0,normal_tissue_restricted,no,0.8,Other tissues reach 30 TPM against 2.7 in breast.,supported
+open,BCL2L1,basal,decoy,3.5,overexpressed_in_subtype,no,0.8,"RNA g -1.25 and protein g -0.70, lower in basal-like tumours.",supported
+open,BCL2L1,basal,decoy,3.5,tumour_vs_normal,yes,0.5,Tumour vs normal g is 0.77.,supported
+open,BCL2L1,basal,decoy,3.5,dependency_in_subtype_lines,yes,0.9,Mean effect -1.33 with 24 dependent lines.,supported
+open,BCL2L1,basal,decoy,3.5,normal_tissue_restricted,no,0.9,Other tissues reach 211 TPM against 93 in breast.,supported
+open,HMGA1,basal,candidate,4.0,overexpressed_in_subtype,yes,0.7,RNA g 1.49 but protein g only 0.10.,supported
+open,HMGA1,basal,candidate,4.0,tumour_vs_normal,yes,0.75,Tumour vs normal g is 1.41.,supported
+open,HMGA1,basal,candidate,4.0,dependency_in_subtype_lines,yes,0.8,Mean effect -0.63 with 19 dependent lines.,supported
+open,HMGA1,basal,candidate,4.0,normal_tissue_restricted,no,0.95,Other tissues reach 841 TPM against 36 in breast.,supported
+open,STK4,basal,decoy,0.5,overexpressed_in_subtype,no,0.6,RNA g -0.29 and protein g 0.45.,supported
+open,STK4,basal,decoy,0.5,tumour_vs_normal,yes,0.5,Tumour vs normal g is 0.64.,supported
+open,STK4,basal,decoy,0.5,dependency_in_subtype_lines,no,0.9,"Mean effect -0.12, 0 dependent lines.",supported
+open,CDCA2,basal,candidate,3.5,overexpressed_in_subtype,yes,0.8,RNA g 1.39 and protein g 0.59.,supported
+open,CDCA2,basal,candidate,3.5,tumour_vs_normal,yes,0.85,Tumour vs normal g is 2.15.,supported
+open,CDCA2,basal,candidate,3.5,dependency_in_subtype_lines,no,0.85,Mean effect -0.18 with 0 dependent lines.,supported
+open,CDCA2,basal,candidate,3.5,normal_tissue_restricted,no,0.7,"Breast is nearly absent at 0.18 TPM, but other tissues reach 39 TPM.",supported
+open,TMEM165,basal,decoy,0.5,overexpressed_in_subtype,no,0.6,RNA g 0.25 and protein g -0.22.,supported
+open,TMEM165,basal,decoy,0.5,tumour_vs_normal,yes,0.6,Tumour vs normal g is 1.27.,supported
+open,TMEM165,basal,decoy,0.5,dependency_in_subtype_lines,no,0.85,Mean effect -0.19 with 1 dependent line.,supported
+open,ABCD3,her2,decoy,1.0,dependency_in_subtype_lines,no,0.8,Mean gene effect is -0.21 with 1 dependent line.,supported
+open,ABCD3,her2,decoy,1.0,overexpressed_in_subtype,no,0.7,"RNA g is -0.21, so it is not higher in this subtype.",supported
+open,UBE2I,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.8,Mean gene effect is -1.98 with 19 dependent lines.,supported
+open,UBE2I,her2,decoy,3.0,normal_tissue_restricted,no,0.8,Other normal tissues reach 70 TPM against 36 TPM in breast.,supported
+open,UBE2I,her2,decoy,3.0,overexpressed_in_subtype,yes,0.4,"RNA g is 0.42 and protein g is 0.53, which is modest.",contradicted
+open,OTUB2,her2,candidate,2.0,dependency_in_subtype_lines,no,0.85,Mean gene effect is +0.05 with no dependent lines.,supported
+open,OTUB2,her2,candidate,2.0,normal_tissue_restricted,yes,0.6,"Breast TPM is 0.5 against 32 TPM in other tissues. Breast is the low tissue, so the restriction criterion is met only in the sense of low breast expression.",contradicted
+open,OTUB2,her2,candidate,2.0,tumour_vs_normal,yes,0.6,Tumour vs normal g is 1.4.,supported
+open,DARS2,her2,decoy,1.0,overexpressed_in_subtype,no,0.8,RNA g is -0.03.,supported
+open,DARS2,her2,decoy,1.0,dependency_in_subtype_lines,no,0.8,Mean gene effect is -0.22 with no dependent lines.,supported
+open,COPS5,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.8,Mean gene effect is -1.85 with 19 dependent lines.,supported
+open,COPS5,her2,decoy,3.0,overexpressed_in_subtype,no,0.6,RNA g is 0.17 and protein g is 0.09.,supported
+open,COPS5,her2,decoy,3.0,normal_tissue_restricted,no,0.8,Other normal tissues reach 63 TPM against 30 TPM in breast.,supported
+open,BAZ1B,her2,decoy,1.0,dependency_in_subtype_lines,no,0.8,Mean gene effect is -0.32 with 1 dependent line.,supported
+open,BAZ1B,her2,decoy,1.0,overexpressed_in_subtype,no,0.6,RNA g is 0.13.,supported
+open,CLPB,her2,candidate,3.0,overexpressed_in_subtype,yes,0.8,RNA g is 1.26 and protein g is 0.73.,supported
+open,CLPB,her2,candidate,3.0,dependency_in_subtype_lines,no,0.6,"Mean gene effect is -0.31 with 4 dependent lines, so dependency is partial.",supported
+open,CLPB,her2,candidate,3.0,normal_tissue_restricted,yes,0.6,Breast TPM is 2.8 against 110 TPM in other tissues. Breast is the low tissue.,contradicted
+open,KPNB1,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.85,Mean gene effect is -2.27 with 19 dependent lines.,supported
+open,KPNB1,her2,decoy,3.0,overexpressed_in_subtype,no,0.8,RNA g is -0.36.,supported
+open,KPNB1,her2,decoy,3.0,normal_tissue_restricted,no,0.85,Other normal tissues reach 171 TPM against 54 TPM in breast.,supported
+open,ATP6V1D,her2,candidate,3.0,dependency_in_subtype_lines,yes,0.75,Mean gene effect is -0.88 with 18 dependent lines.,supported
+open,ATP6V1D,her2,candidate,3.0,overexpressed_in_subtype,yes,0.5,"RNA g is 1.0 but protein g is only 0.04, so the two layers disagree.",supported
+open,ATP6V1D,her2,candidate,3.0,normal_tissue_restricted,no,0.8,Other normal tissues reach 72 TPM against 20 TPM in breast.,supported
+open,ERBB2,her2,candidate,10.0,overexpressed_in_subtype,yes,0.97,RNA g is 1.94 and protein g is 1.89.,supported
+open,ERBB2,her2,candidate,10.0,dependency_in_subtype_lines,yes,0.9,Mean gene effect is -1.17 with 12 dependent lines.,supported
+open,ERBB2,her2,candidate,10.0,clinical_precedence,yes,0.99,"Clinical stage is 4, approved for breast cancer.",supported
+open,ERBB2,her2,candidate,10.0,tumour_vs_normal,yes,0.8,Tumour vs normal g is 0.75.,supported
+open,KIF26B,her2,decoy,2.0,tumour_vs_normal,yes,0.7,Tumour vs normal g is 2.17.,supported
+open,KIF26B,her2,decoy,2.0,dependency_in_subtype_lines,no,0.85,Mean gene effect is -0.08 with no dependent lines.,supported
+open,KIF26B,her2,decoy,2.0,normal_tissue_restricted,yes,0.7,Breast TPM is 0.23 against 6.6 TPM at most in other tissues. Breast is the low tissue.,contradicted
+open,GRB7,her2,candidate,4.0,overexpressed_in_subtype,yes,0.95,"RNA g is 1.95 and protein g is 1.75, consistent with co-amplification with ERBB2.",supported
+open,GRB7,her2,candidate,4.0,dependency_in_subtype_lines,no,0.8,Mean gene effect is -0.06 with 1 dependent line.,supported
+open,GRB7,her2,candidate,4.0,clinical_precedence,no,0.8,No drug has reached the clinic for breast cancer.,supported
+open,LACTB,her2,decoy,1.0,overexpressed_in_subtype,no,0.8,RNA g is -0.12 and protein g is -0.17.,supported
+open,LACTB,her2,decoy,1.0,dependency_in_subtype_lines,no,0.8,Mean gene effect is -0.29 with 1 dependent line.,supported
+open,CHMP5,her2,decoy,1.0,overexpressed_in_subtype,no,0.85,RNA g is -0.57 and protein g is -0.33.,supported
+open,CHMP5,her2,decoy,1.0,dependency_in_subtype_lines,no,0.6,Mean gene effect is -0.31 with 5 dependent lines.,supported
+open,RRN3,her2,decoy,3.0,dependency_in_subtype_lines,yes,0.7,Mean gene effect is -1.77 with 8 dependent lines.,supported
+open,RRN3,her2,decoy,3.0,overexpressed_in_subtype,no,0.5,"RNA g is 0.0, though protein g is 0.76.",supported
+open,RRN3,her2,decoy,3.0,normal_tissue_restricted,no,0.8,Other normal tissues reach 42 TPM against 35 TPM in breast.,supported
+open,GOLGA5,her2,candidate,2.0,overexpressed_in_subtype,yes,0.6,RNA g is 0.91 and protein g is 0.66.,supported
+open,GOLGA5,her2,candidate,2.0,dependency_in_subtype_lines,no,0.85,Mean gene effect is -0.11 with no dependent lines.,supported
+open,PSMD3,her2,candidate,4.0,overexpressed_in_subtype,yes,0.7,"RNA g is 2.07, though protein g is only 0.32.",supported
+open,PSMD3,her2,candidate,4.0,dependency_in_subtype_lines,yes,0.85,Mean gene effect is -2.10 with 19 dependent lines.,supported
+open,PSMD3,her2,candidate,4.0,clinical_precedence,yes,0.4,"Stage 4 likely reflects proteasome inhibitors acting on the proteasome as a whole, not a PSMD3-specific drug.",supported
+open,PSMD3,her2,candidate,4.0,normal_tissue_restricted,no,0.9,Other normal tissues reach 194 TPM against 105 TPM in breast.,supported
+open,AKT1,her2,candidate,4.0,clinical_precedence,yes,0.95,"Clinical stage is 4, with an approved AKT inhibitor for breast cancer.",supported
+open,AKT1,her2,candidate,4.0,overexpressed_in_subtype,yes,0.7,RNA g is 1.48 and protein g is 0.90.,supported
+open,AKT1,her2,candidate,4.0,dependency_in_subtype_lines,no,0.6,"Mean gene effect is -0.34 with 8 dependent lines, which is weak.",supported
+open,ALDH18A1,her2,candidate,3.0,overexpressed_in_subtype,yes,0.8,RNA g is 1.18 and protein g is 1.26.,supported
+open,ALDH18A1,her2,candidate,3.0,tumour_vs_normal,yes,0.75,Tumour vs normal g is 1.96.,supported
+open,ALDH18A1,her2,candidate,3.0,dependency_in_subtype_lines,no,0.7,Mean gene effect is -0.26 with 5 dependent lines.,supported
+open,CDK12,her2,candidate,5.0,overexpressed_in_subtype,yes,0.8,"RNA g is 0.86 and protein g is 0.76, consistent with the ERBB2 amplicon.",supported
+open,CDK12,her2,candidate,5.0,dependency_in_subtype_lines,yes,0.7,Mean gene effect is -0.77 with 15 dependent lines.,supported
+open,CDK12,her2,candidate,5.0,normal_tissue_restricted,no,0.7,Other normal tissues reach 35 TPM against 14 TPM in breast.,supported
+open,CDK12,her2,candidate,5.0,clinical_precedence,no,0.7,No drug has reached the clinic for breast cancer by this evidence row.,supported
+open,FAF2,luminal,candidate,1.5,overexpressed_in_subtype,yes,0.7,RNA g 1.65 and protein g 1.24 are higher in luminal tumours.,supported
+open,FAF2,luminal,candidate,1.5,dependency_in_subtype_lines,no,0.6,Mean effect -0.44 with only 2 dependent lines is below the threshold.,supported
+open,FAF2,luminal,candidate,1.5,clinical_precedence,no,0.9,No breast cancer drug exists (stage 0).,supported
+open,HNRNPL,luminal,decoy,2.0,dependency_in_subtype_lines,yes,0.8,Mean effect -1.34 with 6 dependent lines.,supported
+open,HNRNPL,luminal,decoy,2.0,overexpressed_in_subtype,no,0.7,RNA g -0.18 shows no luminal enrichment.,supported
+open,HNRNPL,luminal,decoy,2.0,normal_tissue_restricted,no,0.9,Other tissues reach about 1.9x breast level.,supported
+open,C1orf122,luminal,decoy,0.5,overexpressed_in_subtype,no,0.7,RNA g -0.60 is lower in luminal tumours.,supported
+open,C1orf122,luminal,decoy,0.5,dependency_in_subtype_lines,no,0.8,Mean effect -0.34 with 0 dependent lines.,supported
+open,C1orf122,luminal,decoy,0.5,tumour_vs_normal,yes,0.5,Tumour vs normal g 0.97.,supported
+open,CCDC125,luminal,candidate,0.5,overexpressed_in_subtype,yes,0.6,RNA g 1.38 but protein g only 0.53.,supported
+open,CCDC125,luminal,candidate,0.5,dependency_in_subtype_lines,no,0.9,Mean effect -0.11 with no dependent lines.,supported
+open,TADA1,luminal,decoy,0.5,overexpressed_in_subtype,no,0.8,RNA g 0.05 shows no subtype difference.,supported
+open,TADA1,luminal,decoy,0.5,tumour_vs_normal,yes,0.5,Tumour vs normal g 1.32.,supported
+open,TADA1,luminal,decoy,0.5,dependency_in_subtype_lines,no,0.9,Mean effect -0.06.,supported
+open,RHOC,luminal,decoy,1.0,overexpressed_in_subtype,no,0.7,RNA g 0.09 shows no luminal enrichment.,supported
+open,RHOC,luminal,decoy,1.0,dependency_in_subtype_lines,no,0.8,Mean effect -0.26 with no dependent lines.,supported
+open,RHOC,luminal,decoy,1.0,normal_tissue_restricted,no,0.9,Other tissues are about 1.9x breast.,supported
+open,FAAH,luminal,candidate,1.5,overexpressed_in_subtype,yes,0.8,RNA g 1.55 and protein g 0.86.,supported
+open,FAAH,luminal,candidate,1.5,dependency_in_subtype_lines,no,0.8,Mean effect -0.18 with no dependent lines.,supported
+open,FAAH,luminal,candidate,1.5,normal_tissue_restricted,no,0.9,Other tissues reach 5.6x breast level.,supported
+open,DDX54,luminal,decoy,1.5,dependency_in_subtype_lines,yes,0.8,Mean effect -1.40 with 6 dependent lines.,supported
+open,DDX54,luminal,decoy,1.5,overexpressed_in_subtype,no,0.8,RNA g 0.06 and protein g -0.32.,supported
+open,DDX54,luminal,decoy,1.5,normal_tissue_restricted,no,0.8,Other tissues are about 1.9x breast.,supported
+open,MCCC2,luminal,candidate,1.5,overexpressed_in_subtype,yes,0.8,RNA g 1.48 and protein g 0.94.,supported
+open,MCCC2,luminal,candidate,1.5,dependency_in_subtype_lines,no,0.9,Mean effect -0.05.,supported
+open,MCCC2,luminal,candidate,1.5,normal_tissue_restricted,no,0.8,Other tissues are about 2x breast.,supported
+open,PPP2CA,luminal,candidate,3.0,overexpressed_in_subtype,yes,0.8,RNA g 1.26 and protein g 0.94.,supported
+open,PPP2CA,luminal,candidate,3.0,dependency_in_subtype_lines,yes,0.8,Mean effect -1.17 with 6 dependent lines.,supported
+open,PPP2CA,luminal,candidate,3.0,tumour_vs_normal,yes,0.6,Tumour vs normal g 0.90.,supported
+open,PPP2CA,luminal,candidate,3.0,normal_tissue_restricted,no,0.9,Other tissues are 2.3x breast.,supported
+open,HSPH1,luminal,decoy,1.0,overexpressed_in_subtype,no,0.7,RNA g -0.24 and protein g -0.39.,supported
+open,HSPH1,luminal,decoy,1.0,dependency_in_subtype_lines,no,0.9,Mean effect -0.04.,supported
+open,HSPH1,luminal,decoy,1.0,tumour_vs_normal,yes,0.6,Tumour vs normal g 1.12.,supported
+open,GNL3,luminal,decoy,1.5,dependency_in_subtype_lines,yes,0.8,Mean effect -1.37 with 6 dependent lines.,supported
+open,GNL3,luminal,decoy,1.5,overexpressed_in_subtype,no,0.8,RNA g -0.07.,supported
+open,GNL3,luminal,decoy,1.5,normal_tissue_restricted,no,0.9,Other tissues are 2.5x breast.,supported
+open,NCAPG,luminal,decoy,3.5,dependency_in_subtype_lines,yes,0.8,Mean effect -1.75 with 6 dependent lines.,supported
+open,NCAPG,luminal,decoy,3.5,tumour_vs_normal,yes,0.9,Tumour vs normal g 2.76.,supported
+open,NCAPG,luminal,decoy,3.5,normal_tissue_restricted,yes,0.7,"Breast TPM 0.42 versus 76.7 maximum elsewhere, so breast is low, not restricted; other tissue is not low.",contradicted
+open,NCAPG,luminal,decoy,3.5,overexpressed_in_subtype,no,0.8,"RNA g -0.86 and protein g -0.48, lower in luminal.",supported
+open,GATA3,luminal,candidate,5.5,overexpressed_in_subtype,yes,0.95,RNA g 2.37 and protein g 2.07.,supported
+open,GATA3,luminal,candidate,5.5,dependency_in_subtype_lines,yes,0.8,Mean effect -1.25 with 6 dependent lines.,supported
+open,GATA3,luminal,candidate,5.5,tumour_vs_normal,yes,0.6,Tumour vs normal g 0.79.,supported
+open,GATA3,luminal,candidate,5.5,normal_tissue_restricted,no,0.9,Other tissues reach 6.6x breast.,supported
+open,GATA3,luminal,candidate,5.5,clinical_precedence,no,0.8,No drug yet (stage 0).,supported
+open,EIF2S2,luminal,decoy,1.5,dependency_in_subtype_lines,yes,0.8,Mean effect -1.36 with 6 dependent lines.,supported
+open,EIF2S2,luminal,decoy,1.5,overexpressed_in_subtype,no,0.7,RNA g -0.62.,supported
+open,EIF2S2,luminal,decoy,1.5,normal_tissue_restricted,no,0.9,Other tissues are 3x breast.,supported
+open,PCYOX1L,luminal,candidate,0.5,overexpressed_in_subtype,yes,0.7,RNA g 1.33 and protein g 1.06.,supported
+open,PCYOX1L,luminal,candidate,0.5,dependency_in_subtype_lines,no,0.95,Mean effect +0.06.,supported
+open,FOXA1,luminal,candidate,6.0,overexpressed_in_subtype,yes,0.95,RNA g 1.67 and protein g 1.44.,supported
+open,FOXA1,luminal,candidate,6.0,dependency_in_subtype_lines,yes,0.85,Mean effect -1.43 with 6 dependent lines.,supported
+open,FOXA1,luminal,candidate,6.0,normal_tissue_restricted,no,0.9,Other tissues reach 6.8x breast.,supported
+open,FOXA1,luminal,candidate,6.0,clinical_precedence,no,0.8,No drug yet (stage 0).,supported
+open,BLZF1,luminal,decoy,0.5,overexpressed_in_subtype,no,0.7,RNA g 0.38 and protein g -0.37.,supported
+open,BLZF1,luminal,decoy,0.5,dependency_in_subtype_lines,no,0.9,Mean effect -0.08.,supported
+open,MAPK9,luminal,candidate,1.0,overexpressed_in_subtype,yes,0.7,RNA g 1.37 and protein g 0.83.,supported
+open,MAPK9,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.95,"Mean effect +0.20, no dependent lines.",supported
+open,MAPK9,luminal,candidate,1.0,normal_tissue_restricted,no,0.9,Other tissues are 6.8x breast.,supported
+open,CXXC5,luminal,candidate,1.0,overexpressed_in_subtype,yes,0.85,RNA g 2.06 and protein g 1.23.,supported
+open,CXXC5,luminal,candidate,1.0,dependency_in_subtype_lines,no,0.95,Mean effect +0.08.,supported
+open,CXXC5,luminal,candidate,1.0,normal_tissue_restricted,no,0.9,Other tissues are 8x breast.,supported
