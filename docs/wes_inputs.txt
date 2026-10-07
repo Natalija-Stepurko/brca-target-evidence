@@ -1,0 +1,13 @@
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/technical/reference_genome/GRCh38/GRCh38.d1.vd1_BWA.tar.gz
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/technical/reference_genome/GRCh38/GRCh38.d1.vd1.fa.tar.gz
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/technical/reference_genome/GRCh38/GRCh38.d1.vd1.fa.fai
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/technical/reference_genome/GRCh38/GRCh38.d1.vd1.dict
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/technical/reference_genome/Exome_Target_bed/S07604624_Covered_human_all_v6_plus_UTR.liftover.to.hg38.bed6.gz
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/release/latest/high-confidence_sSNV_in_HC_regions_v1.2.1.vcf.gz
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/release/latest/high-confidence_sINDEL_in_HC_regions_v1.2.1.vcf.gz
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/release/latest/High-Confidence_Regions_v1.2.bed
+https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/seqc/Somatic_Mutation_WG/release/latest/README.md
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/000/SRR7890850/SRR7890850_1.fastq.gz
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/000/SRR7890850/SRR7890850_2.fastq.gz
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/001/SRR7890851/SRR7890851_1.fastq.gz
+ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR789/001/SRR7890851/SRR7890851_2.fastq.gz

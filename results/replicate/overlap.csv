@@ -1,0 +1,16 @@
+arm,subtype,null_median,null_p95,overlap,null_pct,above_null
+MOFA+,basal,1.0,4.0,17,0.046,True
+MOFA+,her2,0.0,7.0,7,0.06,False
+MOFA+,luminal,1.0,26.0,26,0.06,False
+R,basal,1.0,3.0,18,0.0,True
+R,her2,1.0,3.0,14,0.0,True
+R,luminal,0.0,5.0,29,0.0,True
+R+D,basal,1.0,5.0,7,0.027,True
+R+D,her2,1.0,5.0,5,0.073,False
+R+D,luminal,0.0,5.0,14,0.001,True
+R+P,basal,0.0,5.0,17,0.0,True
+R+P,her2,1.0,4.0,16,0.0,True
+R+P,luminal,0.0,6.0,32,0.0,True
+R+P+D,basal,1.0,6.0,14,0.0,True
+R+P+D,her2,1.0,5.0,7,0.016,True
+R+P+D,luminal,0.0,5.0,16,0.0,True

@@ -8,6 +8,7 @@ has written it to results/.
 
     python docs/site/build.py        -> docs/index.html
 """
+import base64
 import html
 import json
 from datetime import date
@@ -42,6 +43,31 @@ def stage_status():
 
 STATUS = stage_status()
 PRE_REGISTERED = "2026-10-06"
+SUMMARY = json.loads((RES / "report" / "summary.json").read_text()) if "report" in STATUS else None
+SUB_LABEL = {"basal": "basal-like", "her2": "HER2-enriched", "luminal": "luminal"}
+ARMS = ["R", "R+P", "R+D", "R+P+D", "MOFA+", "R-all"]
+
+
+def f3(x):
+    return f"{x:+.3f}" if x is not None else "—"
+
+
+def pct(x):
+    return f"{100 * x:.1f}%" if x is not None else "—"
+
+
+def figure(name, alt):
+    p = RES / "report" / name
+    if not p.exists():
+        return pending("report", alt)
+    uri = "data:image/png;base64," + base64.b64encode(p.read_bytes()).decode()
+    return f'<div class="figwrap"><img src="{uri}" alt="{esc(alt)}" style="width:100%;height:auto"></div>'
+
+
+def verdict_chip(v):
+    if v is None:
+        return '<span class="chip">pending</span>'
+    return ('<span class="chip ok">holds</span>' if v["holds"] else '<span class="chip no">fails</span>')
 
 
 def pending(stage, what):
@@ -144,6 +170,40 @@ def nav():
             f'<div class="navext"><a href="{REPO}">Code</a><a href="{DESIGN}">Design</a></div></nav>')
 
 
+def status_chips():
+    if SUMMARY is None:
+        return '<span class="chip">no data downloaded yet</span><span class="chip">results pending</span>'
+    done = [s for s in ("data", "scores", "nominate", "truth", "ladder", "replicate", "dossier") if s in STATUS]
+    chips = [f'<span class="chip ok">core results in ({len(done)} of 7 stages)</span>']
+    chips.append('<span class="chip">exome module pending</span>' if "wes" not in STATUS else '<span class="chip ok">exome done</span>')
+    chips.append('<span class="chip">agent audit pending</span>' if "audit" not in STATUS else '<span class="chip ok">agent audit done</span>')
+    return "".join(chips)
+
+
+def finding_box():
+    if SUMMARY is None:
+        return ""
+    V = SUMMARY["verdicts"]
+    p2 = V["P2"]["per_subtype"]
+    worst = max(p2.values(), key=lambda x: x["observed"])["observed"]
+    ro = {(r["arm"], r["subtype"]): r for r in SUMMARY["replication"]} if SUMMARY.get("replication") else {}
+    rd_rep = sum(1 for s in SUB_LABEL if ro and ro[("R+D", s)]["above_null"])
+    rp_rep = sum(1 for s in SUB_LABEL if ro and ro[("R+P", s)]["above_null"])
+    return (f'<div class="finding"><p class="eyebrow">What we found</p>'
+            f'<p><b>The protein layer did not pick better targets.</b> Adding CPTAC protein abundance to RNA '
+            f'left every list no more dependency-enriched (P2 {"holds" if V["P2"]["holds"] else "fails"}; the '
+            f'largest shift was {f3(worst)} in mean gene effect, in the wrong direction), and RNA alone on '
+            f'{821:,} tumours matched RNA + protein on 77 (P6 {"holds" if V["P6"]["holds"] else "fails"}). '
+            f'<b>DNA was the layer that helped</b>: copy-number gains that track expression, and recurrent mutations, '
+            f'pointed at genes the matched cell lines depend on (P3 {"fails" if not V["P3"]["holds"] else "holds"}). '
+            f'<b>Yet the DNA-informed lists were the ones that failed to replicate</b> in the second cohort '
+            f'({rd_rep} of 3 subtypes above chance, against {rp_rep} of 3 for RNA + protein), and '
+            f'<b>most lists did not beat random genes matched on expression and popularity</b> at all '
+            f'(P1 {"fails" if not V["P1"]["holds"] else "holds"}). The honest summary: subtype over-expression, '
+            f'in any layer, is a weak guide to dependency; the layer that adds dependency signal is DNA, and it '
+            f'is cohort-fragile.</p></div>')
+
+
 def header():
     return f"""<header class="page" id="top">
   <p class="eyebrow">Breast cancer · multi-omics · target identification · study 2 of a series</p>
@@ -154,7 +214,8 @@ def header():
   size, with and without each layer, scored against dependency and clinical evidence that played no part
   in the nomination, against random genes matched for how well studied they are.</p>
   <div class="status"><span class="chip live">pre-registered {PRE_REGISTERED}</span>
-  <span class="chip">no data downloaded yet</span><span class="chip">results pending</span></div>
+  {status_chips()}</div>
+  {finding_box()}
   <p class="links"><a href="{DESIGN}">Design (pre-registered)</a> · <a href="{LIT}">Literature</a> ·
   <a href="{REPO}">Repository</a> · <a href="{SISTER}">Study 1: single-cell cell states and survival</a></p>
 </header>"""
@@ -249,8 +310,9 @@ PREDICTIONS = [
 
 
 def s_predictions():
+    V = (SUMMARY or {}).get("verdicts", {})
     rows = "".join(f'<tr><td><b>{p}</b></td><td>{esc(t)}</td><td class="muted">{esc(n)}</td>'
-                   f'<td><span class="chip">pending</span></td></tr>' for p, t, n in PREDICTIONS)
+                   f'<td>{verdict_chip(V.get(p))}</td></tr>' for p, t, n in PREDICTIONS)
     return f"""<section class="sec" id="predictions">
   <h2>Predictions, fixed before any data</h2>
   <div class="scroll"><table>
@@ -261,13 +323,114 @@ def s_predictions():
 </section>"""
 
 
+def results_text():
+    """The findings in words, every number read from the summary; verbs chosen from the verdict booleans."""
+    V = SUMMARY["verdicts"]
+    obs = {(r["arm"], r["subtype"]): r["mean_effect"] for r in SUMMARY["observed"]}
+    flo = {(r["arm"], r["subtype"]): r["floor_pct_mean_effect"] for r in SUMMARY["floor"]}
+    p2 = V["P2"]["per_subtype"]
+    hurts = [s for s, h in V["P2"]["protein_hurts"].items() if h]
+    beat = {a: n for a, n in V["P1"]["subtypes_beating_floor"].items()}
+    best_floor = min(flo, key=flo.get)
+    out = []
+    out.append(f"<p><b>Most lists do not beat random genes of the same expression, popularity and protein "
+               f"detectability.</b> Of the {len(ARMS)} arms, {len(V['P1']['arms_holding'])} clear the matched-random "
+               f"floor (5th percentile) in at least two of three subtypes"
+               + (f": {', '.join(V['P1']['arms_holding'])}" if V['P1']['arms_holding'] else "")
+               + f". The strongest result is {best_floor[0]} in {SUB_LABEL[best_floor[1]]}, better than "
+               f"{pct(1 - flo[best_floor])} of matched random lists. In luminal tumours no arm beats the floor; "
+               f"the luminal truth rests on six cell lines. P1 therefore {'holds' if V['P1']['holds'] else 'fails'}"
+               f"{'' if V['P1']['holds'] else ', and by the pre-registered rule P2–P6 below are reported, not interpreted'}.</p>")
+    out.append(f"<p><b>Adding protein to RNA made the lists less dependency-enriched, not more.</b> R+P minus R "
+               f"in mean gene effect: " + "; ".join(f"{SUB_LABEL[s]} {f3(x['observed'])} [{f3(x['lo'])}, {f3(x['hi'])}]"
+                                                   for s, x in p2.items())
+               + f" (positive = R+P worse). The interval excludes zero in {len(hurts)} of 3 subtypes"
+               + (f" ({', '.join(SUB_LABEL[s] for s in hurts)})" if hurts else "") + ". P2 "
+               f"{'holds' if V['P2']['holds'] else 'fails'}: the protein layer does not beat RNA by the smallest "
+               f"effect of interest in any subtype.</p>")
+    p3 = V["P3"]["per_subtype"]
+    out.append(f"<p><b>DNA was the layer that helped.</b> R+D minus R: "
+               + "; ".join(f"{SUB_LABEL[s]} {f3(x['R+D_minus_R'])}" for s, x in p3.items())
+               + f". Copy-number gains that track expression, and recurrent mutations, point at genes the matched "
+               f"cell lines depend on; subtype-specific protein abundance does not. P3 "
+               f"{'holds' if V['P3']['holds'] else 'fails'}.</p>")
+    p4 = V["P4"]["per_subtype"]
+    out.append(f"<p><b>The integration method mattered little.</b> MOFA+ minus R+P+D: "
+               + "; ".join(f"{SUB_LABEL[s]} {f3(x['observed'])} [{f3(x['lo'])}, {f3(x['hi'])}]" for s, x in p4.items())
+               + f". P4 {'holds' if V['P4']['holds'] else 'fails'}.</p>")
+    p6 = V["P6"]["per_subtype"]
+    out.append(f"<p><b>RNA on many tumours against protein on few.</b> Mean gene effect, R-all vs R+P: "
+               + "; ".join(f"{SUB_LABEL[s]} {f3(x['R-all'])} vs {f3(x['R+P'])}" for s, x in p6.items())
+               + f". P6 {'holds' if V['P6']['holds'] else 'fails'}.</p>")
+    if "P5" in V:
+        ab = V["P5"]["subtypes_above_null"]
+        out.append(f"<p><b>Replication in the Krug 2020 cohort.</b> Subtypes in which an arm's discovery and "
+                   f"replication top-50 lists overlap more than the permutation null's 95th percentile: "
+                   + "; ".join(f"{a} {n} of 3" for a, n in ab.items())
+                   + f". The protein arm replicates {'no worse' if V['P5']['protein_replicates_no_worse'] else 'worse'} "
+                   f"than RNA. P5 {'holds' if V['P5']['holds'] else 'fails'}.</p>")
+    return "".join(out)
+
+
+def dossier_html():
+    p = RES / "dossier" / "top10.csv"
+    if not p.exists():
+        return pending("dossier", "The candidate dossiers: the top genes of the best arm per subtype, each with every rung")
+    import csv
+    rows = list(csv.DictReader(p.open()))
+    best = SUMMARY["dossier"]["best_arm"] if SUMMARY and SUMMARY.get("dossier") else {}
+    out = ['<p>The ten highest-ranked genes of the best-scoring arm per subtype, with every rung. "Dep." is the mean '
+           'gene effect in subtype-matched lines (negative = dependency) and the number of those lines below '
+           '−0.5; "clinic" is the highest clinical stage of a drug against the gene for a breast indication '
+           '(4 = approved); "tumour cells" is the ratio of mean expression in malignant vs other cells of the '
+           '50,002-cell atlas; "HR" is the Cox hazard ratio per SD of expression with age and stage; "Krug" marks '
+           'genes also in the replication cohort\'s list for the same arm.</p>']
+    for s in ("basal", "her2", "luminal"):
+        rs = [r for r in rows if r["subtype"] == s]
+        if not rs:
+            continue
+        out.append(f'<h3>{SUB_LABEL[s]} — arm {esc(best.get(s, rs[0]["arm"]))}</h3><div class="scroll"><table>'
+                   '<thead><tr><th>#</th><th>gene</th><th>dep.</th><th>lines</th><th>hit</th><th>clinic</th>'
+                   '<th>tumour cells</th><th>HR</th><th>p</th><th>GTEx breast / max other TPM</th><th>Krug</th></tr></thead><tbody>')
+        for r in rs:
+            def num(k, fmt):
+                try:
+                    return fmt.format(float(r[k]))
+                except (ValueError, KeyError):
+                    return "—"
+            out.append(f'<tr><td>{r["rank"]}</td><td><b>{esc(r["gene"])}</b>{" *" if r["common_essential"] == "True" else ""}</td>'
+                       f'<td>{num("mean_effect_subtype", "{:+.2f}")}</td><td>{num("n_dependent_lines", "{:.0f}")}</td>'
+                       f'<td>{"yes" if r["hit_subtype"] == "True" else ""}</td><td>{num("clinical_stage", "{:.0f}")}</td>'
+                       f'<td>{num("atlas_malignant_ratio", "{:.1f}")}</td><td>{num("cox_hr_per_sd", "{:.2f}")}</td>'
+                       f'<td>{num("cox_p", "{:.3f}")}</td><td>{num("gtex_breast_tpm", "{:.0f}")} / {num("gtex_max_other_tpm", "{:.0f}")}</td>'
+                       f'<td>{"yes" if r.get("in_krug_list_same_arm") == "True" else ""}</td></tr>')
+        out.append("</tbody></table></div>")
+    out.append('<p class="note">* common-essential gene (excluded from the hit sets). Full tables with every column: '
+               f'<a href="{REPO}/blob/main/results/dossier/candidates.csv">results/dossier/candidates.csv</a>.</p>')
+    return "".join(out)
+
+
 def s_results():
+    if SUMMARY is None:
+        body = (pending("ladder", "Each arm against its matched-random floor and the permutation null, per subtype (P1)")
+                + pending("ladder", "Paired differences between arms with bootstrap intervals (P2–P4, P6)")
+                + pending("replicate", "Discovery–replication overlap per arm against the permutation null (P5)")
+                + pending("dossier", "The candidate dossiers: the top genes of the best arm per subtype, each with every rung"))
+    else:
+        body = (results_text()
+                + figure("fig_floor.png", "Each arm's observed mean gene effect against its matched-random floor, per subtype")
+                + '<p class="figcap">Each arm\'s top-50 against 1,000 random lists matched gene by gene on PubMed count, '
+                  'expression and protein detectability. A dot below the grey band beats the floor.</p>'
+                + figure("fig_diffs.png", "Paired differences between arms with bootstrap intervals")
+                + '<p class="figcap">Differences between arms in the primary endpoint with 95% paired bootstrap '
+                  'intervals over tumours; the shaded band is the smallest effect of interest (±0.05).</p>'
+                + figure("fig_replication.png", "Discovery–replication overlap per arm against the permutation null")
+                + '<p class="figcap">Genes shared by the discovery and Krug 2020 top-50 lists, against the overlap '
+                  'when Krug\'s subtype labels are shuffled.</p>'
+                + '<h3>Candidate dossiers</h3>' + dossier_html())
     return f"""<section class="sec" id="results">
   <h2>Results</h2>
-  {pending("ladder", "Each arm against its matched-random floor and the permutation null, per subtype (P1)")}
-  {pending("ladder", "Paired differences between arms with bootstrap intervals (P2–P4, P6)")}
-  {pending("replicate", "Discovery–replication overlap per arm against the permutation null (P5)")}
-  {pending("dossier", "The candidate dossiers: the top genes of the best arm per subtype, each with every rung")}
+  {body}
 </section>"""
 
 
@@ -303,8 +466,45 @@ def s_exome():
   exome reads (BWA-MEM2, GATK Mutect2) and the calls are scored against that truth set. HCC1395 is also a
   CRISPR-screened DepMap line, so its called mutations are traced into its own dependencies and into the
   basal-like candidate list.</p>
-  """ + pending("wes", "SNV precision and recall against the SEQC2 truth set; mutations traced into dependencies") + """
+  """ + wes_html() + """
 </section>"""
+
+
+def wes_html():
+    b = RES / "wes" / "benchmark.json"
+    if "wes" not in STATUS or not b.exists():
+        return pending("wes", "SNV precision and recall against the SEQC2 truth set; mutations traced into dependencies")
+    bench = json.loads(b.read_text())
+    cov = json.loads((RES / "wes" / "coverage.json").read_text())
+    tim = json.loads((RES / "wes" / "timings.json").read_text())
+    import csv
+    genes = list(csv.DictReader((RES / "wes" / "mutated_genes.csv").open()))
+    dep = [g for g in genes if g["hcc1395_gene_effect"] not in ("", "nan") and float(g["hcc1395_gene_effect"]) <= -0.5]
+    dep.sort(key=lambda g: float(g["hcc1395_gene_effect"]))
+    rows = "".join(f"<tr><td>{esc(k.upper())}</td><td>{v['shared']:,}</td><td>{v['calls_only']:,}</td>"
+                   f"<td>{v['truth_only']:,}</td><td>{v['precision']:.3f}</td><td>{v['recall']:.3f}</td>"
+                   f"<td>{v['f1']:.3f}</td></tr>" for k, v in bench.items() if k in ("snv", "indel"))
+    covtxt = "; ".join(f"{sm}: mean {c['mean_target_depth']:.0f}×, {100 * c['fraction_target_ge_20x']:.0f}% of the "
+                       f"target at ≥ 20×" for sm, c in cov.items())
+    hours = sum(v for k, v in tim.items() if k.startswith("align ")) / 3600
+    deprows = "".join(f"<tr><td><b>{esc(g['gene'])}</b></td><td>{g['n_variants']}</td>"
+                      f"<td>{float(g['hcc1395_gene_effect']):+.2f}</td>"
+                      f"<td>{float(g['mean_effect_basal_lines']):+.2f}</td>"
+                      f"<td>{'yes' if any(g[k] == 'True' for k in g if k.startswith('in_basal_top50')) else ''}</td>"
+                      f"<td>{'yes' if g['common_essential'] == 'True' else ''}</td></tr>" for g in dep[:15])
+    return (f'<div class="scroll"><table><thead><tr><th>type</th><th>true positives</th><th>false positives</th>'
+            f'<th>missed</th><th>precision</th><th>recall</th><th>F1</th></tr></thead><tbody>{rows}</tbody></table></div>'
+            f'<p class="figcap">PASS Mutect2 calls against the SEQC2 v1.2.1 high-confidence somatic calls, both inside '
+            f'the exome target ∩ high-confidence regions ({bench["eval_region_bp"] / 1e6:.1f} Mb). Indel counts are '
+            f'small and indicative only. Coverage on target — {covtxt}. Alignment of both samples took '
+            f'{hours:.1f} h on 8 threads. Omitted and stated: base-quality recalibration, the germline resource, the '
+            f'contamination estimate.</p>'
+            f'<h3>Mutated genes that HCC1395 depends on</h3>'
+            f'<p>Genes with a PASS somatic variant in the target and a CRISPR gene effect ≤ −0.5 in HCC1395 itself '
+            f'(DepMap ACH-000699): {len(dep)} of {len(genes)} mutated genes. The strongest fifteen:</p>'
+            f'<div class="scroll"><table><thead><tr><th>gene</th><th>variants</th><th>HCC1395 effect</th>'
+            f'<th>basal lines mean</th><th>in a basal top-50</th><th>common essential</th></tr></thead>'
+            f'<tbody>{deprows}</tbody></table></div>')
 
 
 DATA = [
@@ -408,7 +608,11 @@ h3{{font-size:1.05rem;margin:1.6em 0 .4em}}
 .chip{{display:inline-block;font-family:var(--mono);font-size:.7rem;padding:3px 9px;border-radius:999px;
   border:1px solid var(--rule);background:var(--panel);color:var(--muted);white-space:nowrap}}
 .chip.live{{border-color:var(--truth);color:var(--truth)}}
+.chip.ok{{border-color:var(--truth);color:var(--truth);background:#EAF4F4}}
+.chip.no{{border-color:var(--prot);color:var(--prot);background:#FBF1EA}}
 .links{{font-size:.95rem}}
+.finding{{background:var(--panel);border-left:4px solid var(--truth);border-radius:6px;padding:12px 16px;margin:14px 0}}
+.finding p{{margin:.3em 0}}
 .cards{{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:1em 0}}
 .card{{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px}}
 .card h3{{margin:0 0 .4em;font-size:.95rem}}

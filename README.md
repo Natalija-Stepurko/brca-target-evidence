@@ -45,14 +45,56 @@ claims survive a check against the held-out data, and does it prefer famous gene
 8. **Exome module.** The SEQC2 HCC1395 / HCC1395BL exome pair from raw reads to somatic calls, scored
    against the published truth set, then traced into HCC1395's own DepMap dependencies.
 
+## Pipeline
+
+```bash
+export UV_PROJECT_ENVIRONMENT=.venv      # any path; the project is a uv package
+uv sync --extra mofa --group dev         # core dependencies, MOFA+, test tools
+uv run bte stages                        # the ten stages
+uv run bte run data                      # downloads ~1.5 GB with sha256 provenance; builds the gene universe
+uv run bte run scores && uv run bte run nominate && uv run bte run truth
+uv run bte run ladder                    # ~3 h on 4 cores: 1,000 matched lists, 1,000 permutations, 1,000 bootstraps
+uv run bte run replicate && uv run bte run dossier && uv run bte run report
+uv run python docs/site/build.py         # the page, every number read from results/
+```
+
+| Stage | Module | Writes | Does |
+|---|---|---|---|
+| `data` | `stages/data.py` | `results/data/`, `results/MANIFEST.sha256` | downloads every input (`sources.py`), records sha256, builds the 8,203-gene universe |
+| `scores` | `stages/scores.py` | `results/scores/` | per-layer Hedges' *g* per subtype for the discovery, TCGA-all and Krug cohorts; the tumour-vs-normal gate |
+| `nominate` | `stages/nominate.py`, `arms.py` | `results/nominate/` | the six arms' top-K lists; MOFA+ fit; positive controls |
+| `truth` | `stages/truth.py` | `results/truth/` | DepMap 24Q4 subtype-matched dependency; Open Targets 26.09 clinical precedence; tractability; GTEx |
+| `ladder` | `stages/ladder.py` | `results/ladder/` | matched-random floor, label-permutation null, paired bootstrap, arm differences |
+| `replicate` | `stages/replicate.py` | `results/replicate/` | the frozen pipeline on Krug 2020; overlap against a permutation null |
+| `dossier` | `stages/dossier.py` | `results/dossier/` | every rung for the best arm's candidates, including the study-1 atlas and TCGA survival |
+| `wes` | `stages/wes.py` | `results/wes/` | SEQC2 exome pair from raw reads to scored somatic calls (needs the micromamba environment below) |
+| `audit` | — | `results/audit/` | agent-written dossiers checked claim by claim (to come) |
+| `report` | `stages/report.py` | `results/report/` | verdicts on P1–P6 from the tables, and the figures |
+
+`tests/test_design_consistency.py` checks every number in `src/bte/config.py` against the text of
+`docs/DESIGN.md`, so the code cannot drift from the design unnoticed. CI runs ruff, pytest and the page build.
+
+**Exome module tools, with no root access.** `bwa`, `samtools`, `gatk4`, `bcftools` and `bedtools` from
+bioconda in a micromamba environment:
+
+```bash
+curl -sL https://micro.mamba.pm/api/micromamba/linux-64/latest | tar -xj -C /scratch/bte-wes bin/micromamba
+export MAMBA_ROOT_PREFIX=/scratch/bte-wes/mamba
+/scratch/bte-wes/bin/micromamba create -n wes -c conda-forge -c bioconda bwa samtools gatk4 bcftools bedtools
+# inputs: docs/wes_inputs.txt lists the SEQC2 reference, target BED, truth set and ENA FASTQ files (~15 GB);
+# download them into data/wes/
+uv run bte run wes                       # ~6 h on 4 cores; resumable step by step
+```
+
 ## Repository
 
 | Path | What |
 |---|---|
-| [`docs/DESIGN.md`](docs/DESIGN.md) | the pre-registered design; §12 logs any later change |
+| [`docs/DESIGN.md`](docs/DESIGN.md) | the pre-registered design; §12 logs every change made after first contact with the data |
 | [`research/literature.md`](research/literature.md) | the survey behind the design, with a strength tag on every entry |
-| [`docs/site/build.py`](docs/site/build.py) → `docs/index.html` | the project page; result slots fill from `results/` once stages have run |
-| `src/`, `tests/` | the pipeline (to come, one pull request per stage) |
+| [`docs/site/build.py`](docs/site/build.py) → `docs/index.html` | the project page; every number is read from `results/` when it is built |
+| `src/bte/` | the package: `config.py` (pre-registered parameters), `sources.py` (inputs), `cohorts.py`, `arms.py`, `stages/` |
+| `results/` | small tables and figures from every stage (tracked); downloaded data and large intermediates are not |
 
 ## Data and licences
 

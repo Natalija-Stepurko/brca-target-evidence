@@ -245,7 +245,35 @@ same day.
 
 ## 12. Deviations from §1–§9
 
-None yet. Each entry here will carry the date, the commit, what changed and why.
+Each entry carries the date, what changed and why. No prediction, endpoint or threshold has changed.
+
+1. **2026-10-06 — positive controls read on the pre-gate ranking (§6.3).** ESR1 ranks 1st in the luminal
+   RNA ranking and ERBB2 4th in the HER2-enriched one, so the ranking passes both controls. The
+   tumour-vs-normal gate (§5.2) removes ESR1 from every luminal list: normal breast epithelium
+   expresses it (Hedges' *g* tumour vs normal = 0.19, below the 0.5 gate). The gate is doing what §5.2
+   specifies, and the control tests the ranking, so the controls are evaluated before the gate. A
+   consequence worth stating: a tumour-vs-normal gate excludes lineage targets, ESR1 among them.
+2. **2026-10-06 — breast-carcinoma identifier (§6.2).** Open Targets 26.09 indexes "breast carcinoma" as
+   `MONDO_0004989` (61 descendants); `EFO_0000305` is not a term in that release's disease index. The
+   definition (the term and its descendants) is unchanged.
+3. **2026-10-06 — receptor status of the cell lines (§6.1).** Lines are assigned from DepMap's own
+   `ModelSubtypeFeatures` annotation where it names HER2+, ER+ or TNBC, and for the rest from DepMap
+   expression: ERBB2 log2(TPM+1) ≥ 8 → HER2-enriched, ESR1 ≥ 3 → luminal, otherwise basal. The Dai et al.
+   2017 table named in §6.1 was not used; the DepMap data in hand answer the same question and the basis
+   is recorded per line in `results/truth/depmap_breast_lines.csv`. Result: 26 basal, 19 HER2-enriched,
+   6 luminal, 2 lines with neither annotation nor expression left out.
+4. **2026-10-06 — MOFA+ bootstrap (§7).** A MOFA+ fit takes about 14 s on this machine, so the MOFA+ arm
+   is refitted on the first 200 of the 1,000 bootstrap resamples; the rank-stacking arms use all 1,000.
+   The MOFA+ intervals are therefore wider than the others. The permutation null is unaffected: the MOFA+
+   factors do not depend on the labels, only the factor choice does, which is re-done on every permutation.
+5. **2026-10-06 — one source added (§3, §14).** Mertins et al. 2016 Supplementary Table 1 (Nature) is the
+   source of the per-tumour QC verdict (77 pass, 28 fail) and PAM50 call for the discovery cohort; it is
+   downloaded and recorded like every other input.
+6. **2026-10-06 — cohort sizes as found.** TCGA-BRCA primary tumours with a PAM50 call other than
+   normal-like: 821 (§3 said "~1,000"); adjacent normals with RNA-seq: 114. Krug 2020: 117 of 122 tumours
+   have a non-normal-like PAM50 call. Discovery: 47 luminal, 18 basal-like, 12 HER2-enriched.
+7. **2026-10-06 — matching covariates for a gene absent from a layer (§7).** In the replication cohort a
+   gene missing from Krug's RNA table takes the median expression covariate when strata are formed.
 
 ## 13. Exome module
 
