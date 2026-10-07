@@ -217,7 +217,8 @@ def header():
   {status_chips()}</div>
   {finding_box()}
   <p class="links"><a href="{DESIGN}">Design (pre-registered)</a> · <a href="{LIT}">Literature</a> ·
-  <a href="{REPO}">Repository</a> · <a href="{SISTER}">Study 1: single-cell cell states and survival</a></p>
+  <a href="{REPO}">Repository</a> · <a href="{SISTER}">Study 1: single-cell cell states and survival</a> ·
+  <a href="https://natalija-stepurko.github.io/brca-spatial-evidence/">Study 3: where the candidates sit in tissue</a></p>
 </header>"""
 
 
