@@ -1,0 +1,20 @@
+{
+ "n_lines":53,
+ "lines_per_subtype":{
+  "basal":26,
+  "her2":19,
+  "luminal":6,
+  "None":2
+ },
+ "hits":{
+  "basal":4,
+  "her2":24,
+  "luminal":48
+ },
+ "hit_any_breast":133,
+ "common_essential_in_universe":1252,
+ "t2_genes":377,
+ "t2_in_universe":242,
+ "erbb2_high":8.0,
+ "esr1_high":3.0
+}
