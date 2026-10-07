@@ -103,17 +103,11 @@ def pubmed_counts(genes):
     return strat.pubmed.reindex(genes)
 
 
-def run():
-    t0 = time.time()
-    import anthropic
-    from scipy.stats import spearmanr
-    from sklearn.metrics import roc_auc_score
+def prepare():
+    """Items (candidates + matched decoys) and one prompt per gene and condition, written to results/audit."""
     OUT.mkdir(parents=True, exist_ok=True)
-    client = anthropic.Anthropic()
-
     top = pd.read_csv(C.RESULTS / "dossier" / "top10.csv")
     cands = top[["gene", "subtype", "arm"]]
-    # decoys: same strata as the candidates, nominated by no arm, gate-passing
     strat = pd.read_csv(C.RESULTS / "ladder" / "strata.csv", index_col=0)
     lists = pd.read_csv(C.RESULTS / "nominate" / "lists_discovery.csv")
     gate = pd.read_csv(C.RESULTS / "scores" / "gate.csv", index_col=0)["gate"]
@@ -128,52 +122,101 @@ def run():
     decoys = pd.DataFrame(drows)
     ev = evidence_table(cands, decoys)
     ev.to_csv(OUT / "items.csv", index=False)
+    for cond in ("closed", "open"):
+        with (OUT / f"prompts_{cond}.jsonl").open("w") as f:
+            for r in ev.sample(frac=1, random_state=11).itertuples(index=False):   # roles shuffled away
+                evid = None if cond == "closed" else {k: (round(v, 3) if isinstance(v, float) else v)
+                                                      for k, v in r._asdict().items() if k != "role"}
+                f.write(json.dumps({"gene": r.gene, "subtype": r.subtype,
+                                    "prompt": prompt(r.gene, r.subtype, evid)}) + "\n")
+    print(f"  {len(cands)} candidates, {len(decoys)} decoys; prompts written for both conditions")
+    return ev
 
+
+def call_api(ev):
+    """Dossiers from the Anthropic API, written to results/audit/dossiers_<condition>.jsonl."""
+    import anthropic
+    client = anthropic.Anthropic()
+    for cond in ("closed", "open"):
+        with (OUT / f"dossiers_{cond}.jsonl").open("w") as f:
+            for line in (OUT / f"prompts_{cond}.jsonl").read_text().splitlines():
+                item = json.loads(line)
+                try:
+                    d = call(client, item["prompt"])
+                except Exception as e:
+                    d = {"error": str(e)[:200]}
+                f.write(json.dumps({"gene": item["gene"], "subtype": item["subtype"], "dossier": d}) + "\n")
+        print(f"  {cond}-book: dossiers from {MODEL}", flush=True)
+
+
+def score(ev):
+    """Check every typed claim in results/audit/dossiers_<condition>.jsonl against the frozen tables."""
+    from scipy.stats import spearmanr
+    from sklearn.metrics import roc_auc_score
+    evidx = ev.set_index(["gene", "subtype"])
     results = []
     for cond in ("closed", "open"):
-        for r in ev.itertuples(index=False):
-            evid = None if cond == "closed" else {k: (round(v, 3) if isinstance(v, float) else v)
-                                                  for k, v in r._asdict().items() if k not in ("role",)}
-            try:
-                d = call(client, prompt(r.gene, r.subtype, evid))
-            except Exception as e:                                   # one bad response must not stop the run
-                results.append({"condition": cond, "gene": r.gene, "subtype": r.subtype, "role": r.role,
-                                "error": str(e)[:200]})
+        path = OUT / f"dossiers_{cond}.jsonl"
+        assert path.exists(), f"missing {path}: run with an API key or supply the dossiers (see DESIGN §12)"
+        for line in path.read_text().splitlines():
+            item = json.loads(line)
+            r = evidx.loc[(item["gene"], item["subtype"])]
+            role = r.role
+            d = item["dossier"]
+            if "error" in d or not isinstance(d, dict):
+                results.append({"condition": cond, "gene": item["gene"], "subtype": item["subtype"],
+                                "role": role, "error": str(d)[:200]})
                 continue
-            for cl in d.get("claims", []):
-                results.append({"condition": cond, "gene": r.gene, "subtype": r.subtype, "role": r.role,
-                                "target_score": d.get("target_score"), "claim_type": cl.get("type"),
-                                "direction": cl.get("direction"), "confidence": cl.get("confidence"),
-                                "text": cl.get("text"), "label": check(cl, r._asdict())})
-            if not d.get("claims"):
-                results.append({"condition": cond, "gene": r.gene, "subtype": r.subtype, "role": r.role,
-                                "target_score": d.get("target_score"), "claim_type": None})
-        print(f"  {cond}-book: {len(ev)} dossiers", flush=True)
+            claims = d.get("claims") or []
+            for cl in claims:
+                results.append({"condition": cond, "gene": item["gene"], "subtype": item["subtype"],
+                                "role": role, "target_score": d.get("target_score"),
+                                "claim_type": cl.get("type"), "direction": cl.get("direction"),
+                                "confidence": cl.get("confidence"),
+                                "text": cl.get("text"), "label": check(cl, r.to_dict())})
+            if not claims:
+                results.append({"condition": cond, "gene": item["gene"], "subtype": item["subtype"],
+                                "role": role, "target_score": d.get("target_score"), "claim_type": None})
     res = pd.DataFrame(results)
     res.to_csv(OUT / "claims.csv", index=False)
 
-    summary = {"model": MODEL, "knowledge_cutoff": CUTOFF, "n_candidates": int(len(cands)),
-               "n_decoys": int(len(decoys)), "conditions": {}}
+    summary = {"model": MODEL, "knowledge_cutoff": CUTOFF,
+               "n_candidates": int((ev.role == "candidate").sum()),
+               "n_decoys": int((ev.role == "decoy").sum()), "conditions": {}}
     for cond, d in res.groupby("condition"):
-        typed = d[d.label.isin(["supported", "contradicted"])]
-        faith = typed.groupby("claim_type").label.apply(lambda s: float((s == "supported").mean())).to_dict()
+        typed = d[d.label.isin(["supported", "contradicted"])] if "label" in d else d.iloc[0:0]
+        faith = (typed.groupby("claim_type").label.apply(lambda s: float((s == "supported").mean())).to_dict()
+                 if len(typed) else {})
         per_gene = (d.dropna(subset=["target_score"]).groupby(["gene", "role"]).target_score.first()
                     .reset_index())
-        auc = float(roc_auc_score((per_gene.role == "candidate").astype(int), per_gene.target_score)) \
-            if per_gene.role.nunique() == 2 else None
+        auc = (float(roc_auc_score((per_gene.role == "candidate").astype(int), per_gene.target_score))
+               if per_gene.role.nunique() == 2 else None)
         rho = float(spearmanr(per_gene.target_score, pubmed_counts(per_gene.gene).values).statistic)
+        faith_all = float((typed.label == "supported").mean()) if len(typed) else None
         summary["conditions"][cond] = {
-            "faithfulness_overall": float((typed.label == "supported").mean()) if len(typed) else None,
-            "faithfulness_by_claim_type": faith, "n_claims_checked": int(len(typed)),
-            "n_claims_unsupported": int((d.label == "unsupported").sum()),
-            "decoy_auc": auc, "pubmed_spearman": rho,
-            "P7_holds": bool((typed.label == "supported").mean() < 0.8) if len(typed) else None,
-            "P8_holds": bool(rho >= 0.5 and (auc is not None and auc < 0.7))}
-        print(f"  {cond}: faithfulness {summary['conditions'][cond]['faithfulness_overall']:.2f}, "
-              f"decoy AUC {auc}, PubMed rho {rho:.2f}")
+            "faithfulness_overall": faith_all, "faithfulness_by_claim_type": faith,
+            "n_claims_checked": int(len(typed)),
+            "n_claims_unsupported": int((d.get("label") == "unsupported").sum()) if "label" in d else 0,
+            "n_dossiers": int(per_gene.shape[0]), "decoy_auc": auc, "pubmed_spearman": rho,
+            "mean_score_candidates": float(per_gene[per_gene.role == "candidate"].target_score.mean()),
+            "mean_score_decoys": float(per_gene[per_gene.role == "decoy"].target_score.mean()),
+            "P7_holds": bool(faith_all < 0.8) if faith_all is not None else None,
+            "P8_holds": bool(rho >= 0.5 and auc is not None and auc < 0.7)}
+        print(f"  {cond}: faithfulness {faith_all}, decoy AUC {auc}, PubMed rho {rho:.2f}")
     (OUT / "summary.json").write_text(json.dumps(summary, indent=1) + "\n")
-    P.log_run("audit", {"model": MODEL, "seed": 7},
-              [str(p.relative_to(C.ROOT)) for p in sorted(OUT.glob("*"))], time.time() - t0)
+    return summary
+
+
+def run():
+    t0 = time.time()
+    ev = prepare()
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        call_api(ev)
+    score(ev)
+    source = "api" if os.environ.get("ANTHROPIC_API_KEY") else "files"
+    P.log_run("audit", {"model": MODEL, "seed": 7, "source": source},
+              [str(p.relative_to(C.ROOT)) for p in sorted(OUT.glob("*")) if p.suffix != ".jsonl"],
+              time.time() - t0)
     print(f"done in {time.time() - t0:,.0f}s")
 
 
