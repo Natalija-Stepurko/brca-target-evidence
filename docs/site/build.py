@@ -628,7 +628,8 @@ def s_limits():
 def footer():
     return f"""<footer><p>Built {date.today().isoformat()} from <code>docs/site/build.py</code>. Every number
   that a pipeline stage produces is read from <code>results/</code> when this page is built; none is typed
-  in. <a href="{REPO}">{REPO.split("//")[1]}</a></p></footer>"""
+  in. <a href="{REPO}">{REPO.split("//")[1]}</a></p>
+  <p>More of what I am working on is at <a href="https://natalija-stepurko.com">natalija-stepurko.com</a>.</p></footer>"""
 
 
 # ----------------------------------------------------------------------------- page
